@@ -1,7 +1,9 @@
 package com.revature.controllers;
 
+import java.security.Principal;
 import java.util.List;
 
+import com.revature.models.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.revature.annotations.Authorized;
 import com.revature.models.Post;
 import com.revature.services.PostService;
+
+import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/post")
@@ -32,7 +36,12 @@ public class PostController {
     public ResponseEntity<List<Post>> getAllPosts() {
     	return ResponseEntity.ok(this.postService.getAll());
     }
-    
+
+    @GetMapping("/author/{id}")
+    public ResponseEntity<List<Post>> getAllByAuthor(@PathVariable int id) {
+        return ResponseEntity.ok(this.postService.getAllByAuthorId(id));
+    }
+
     @Authorized
     @PutMapping
     public ResponseEntity<Post> upsertPost(@RequestBody Post post) {
