@@ -1,10 +1,18 @@
 package com.revature.models;
 
+import java.util.Set;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
 
 @Data
 @Entity
@@ -20,4 +28,7 @@ public class User {
     private String password;
     private String firstName;
     private String lastName;
+    
+    @OneToMany(mappedBy="user")
+	private Set<PostLike> likes;
 }
