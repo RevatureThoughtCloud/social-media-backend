@@ -7,8 +7,7 @@ import com.revature.models.Post;
 
 import java.util.List;
 
-public interface PostRepository extends JpaRepository<Post, Integer>{
+public interface PostRepository extends JpaRepository<Post, Integer> {
 
     List<Post> findAllByPostType(PostType postType);
-
 }
