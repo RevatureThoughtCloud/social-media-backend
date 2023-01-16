@@ -94,8 +94,8 @@ public class UserService {
 
     @Authorized
     // Gets userId's followers
-    public List<User> getMyFollowers(Integer userId, String username) {
-        List<Follow> f = followRepository.findByFollowedId(userId);
+    public List<User> getMyFollowers(String username) {
+        List<Follow> f = followRepository.findByFollowedUserName(username);
 
         return f.stream().map((user1) -> user1.getFollowing()).collect(Collectors.toList());
 
@@ -103,8 +103,8 @@ public class UserService {
 
     @Authorized
     // Gets who userId is following
-    public List<User> getWhoImFollowing(Integer userId, String username) {
-        List<Follow> f = followRepository.findByFollowingId(userId);
+    public List<User> getWhoImFollowing(String username) {
+        List<Follow> f = followRepository.findByFollowingUserName(username);
 
         return f.stream().map((user1) -> user1.getFollowed()).collect(Collectors.toList());
     }

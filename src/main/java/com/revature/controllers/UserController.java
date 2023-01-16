@@ -32,22 +32,22 @@ public class UserController {
         this.userService = userService;
     }
 
+    // Get followers
     @Authorized
-    @GetMapping(value = "/followers")
-    public ResponseEntity<List<User>> getFollowers(HttpSession session) {
-        User currentUser = (User) session.getAttribute("user");
-        List<User> l = userService.getMyFollowers(currentUser.getId(),
-                currentUser.getUserName());
+    @GetMapping(value = "/{username}/followers")
+    public ResponseEntity<List<User>> getFollowers(@PathVariable String username, HttpSession session) {
+        // User currentUser = (User) session.getAttribute("user");
+        List<User> l = userService.getMyFollowers(username);
         return new ResponseEntity<>(l, HttpStatus.ACCEPTED);
     }
 
+    // Get following
     @Authorized
-    @GetMapping(value = "/following")
-    public ResponseEntity<List<User>> getFollowing(HttpSession session) {
-        User currentUser = (User) session.getAttribute("user");
-        List<User> l = userService.getWhoImFollowing(currentUser.getId(),
-                currentUser.getUserName());
-        // List<User> m = new ArrayList<>();
+    @GetMapping(value = "/{username}/following")
+    public ResponseEntity<List<User>> getFollowing(@PathVariable String username, HttpSession session) {
+        // User currentUser = (User) session.getAttribute("user");
+        List<User> l = userService.getWhoImFollowing(username);
+
         return new ResponseEntity<>(l, HttpStatus.ACCEPTED);
     }
 
