@@ -36,8 +36,8 @@ public class TestUserFollowController {
 
         String followUser = "/user/follow/";
         String unFollowUser = "/user/unfollow/";
-        String getFollowers = "/user/followers";
-        String getFollowing = "/user/following";
+        // String getFollowers = "/user/{username}/followers";
+        // String getFollowing = "/user/{username}/following";
 
         @Autowired
         private WebApplicationContext context;
@@ -71,6 +71,14 @@ public class TestUserFollowController {
                 sessionattrUser2 = new HashMap<String, Object>();
                 sessionattrUser2.put("user", testUser2);
 
+        }
+
+        public String constructGetFollowerUrl(String username) {
+                return "/user/" + username + "/followers";
+        }
+
+        public String constructGetFollowingUrl(String username) {
+                return "/user/" + username + "/following";
         }
 
         @Test
@@ -194,12 +202,14 @@ public class TestUserFollowController {
         @DisplayName("8. Test - get followers Empty")
         public void testGetFollowersEmpty() throws Exception {
 
-                this.mockMvc.perform(get(getFollowers).sessionAttrs(sessionattrUser1)
-                                .contentType(APPLICATION_JSON)
-                                .content(""))
+                this.mockMvc.perform(
+                                get(constructGetFollowerUrl(testUser1.getUserName())).sessionAttrs(sessionattrUser1)
+
+                                                .contentType(APPLICATION_JSON)
+                                                .content(""))
                                 .andDo(print())
                                 .andExpect(status().isAccepted())
-                                .andExpect(jsonPath("$", hasSize(4)));
+                                .andExpect(jsonPath("$", hasSize(0)));
 
         }
 
@@ -215,9 +225,11 @@ public class TestUserFollowController {
                                 .andExpect(status().isAccepted())
                                 .andExpect(jsonPath("$").doesNotExist());
 
-                this.mockMvc.perform(get(getFollowers).sessionAttrs(sessionattrUser2)
-                                .contentType(APPLICATION_JSON)
-                                .content(""))
+                this.mockMvc.perform(
+                                get(constructGetFollowerUrl(testUser2.getUserName())).sessionAttrs(sessionattrUser2)
+
+                                                .contentType(APPLICATION_JSON)
+                                                .content(""))
                                 .andDo(print())
                                 .andExpect(status().isAccepted())
                                 .andExpect(jsonPath("$").isArray())
@@ -229,9 +241,11 @@ public class TestUserFollowController {
         public void testGetFollowings() throws Exception {
 
                 // unfollow
-                this.mockMvc.perform(get(getFollowing).sessionAttrs(sessionattrUser1)
-                                .contentType(APPLICATION_JSON)
-                                .content(""))
+                this.mockMvc.perform(
+                                get(constructGetFollowingUrl(testUser1.getUserName())).sessionAttrs(sessionattrUser1)
+                                                .param("username", testUser1.getUserName())
+                                                .contentType(APPLICATION_JSON)
+                                                .content(""))
                                 .andDo(print())
                                 .andExpect(status().isAccepted())
                                 .andExpect(jsonPath("$").isArray());
@@ -250,9 +264,11 @@ public class TestUserFollowController {
                                 .andExpect(status().isAccepted())
                                 .andExpect(jsonPath("$").doesNotExist());
                 // check size
-                this.mockMvc.perform(get(getFollowing).sessionAttrs(sessionattrUser1)
-                                .contentType(APPLICATION_JSON)
-                                .content(""))
+                this.mockMvc.perform(
+                                get(constructGetFollowingUrl(testUser1.getUserName())).sessionAttrs(sessionattrUser1)
+                                                .param("username", testUser1.getUserName())
+                                                .contentType(APPLICATION_JSON)
+                                                .content(""))
                                 .andDo(print())
                                 .andExpect(status().isAccepted())
                                 .andExpect(jsonPath("$").isArray())
@@ -260,9 +276,11 @@ public class TestUserFollowController {
 
                 // make sure followers empty
                 // check size
-                this.mockMvc.perform(get(getFollowers).sessionAttrs(sessionattrUser1)
-                                .contentType(APPLICATION_JSON)
-                                .content(""))
+                this.mockMvc.perform(
+                                get(constructGetFollowerUrl(testUser1.getUserName())).sessionAttrs(sessionattrUser1)
+                                                .param("username", testUser1.getUserName())
+                                                .contentType(APPLICATION_JSON)
+                                                .content(""))
                                 .andDo(print())
                                 .andExpect(status().isAccepted())
                                 .andExpect(jsonPath("$").isArray())
