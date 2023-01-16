@@ -3,6 +3,7 @@ package com.revature.services;
 import java.util.List;
 
 import com.revature.models.PostType;
+import com.revature.models.User;
 import org.springframework.stereotype.Service;
 
 import com.revature.models.Post;
@@ -28,4 +29,7 @@ public class PostService {
 	public List<Post> getAllTop() {
 		return postRepository.findAllByPostType(PostType.Top);
 	}
+
+   public List<Post> getAllByAuthorId(int id) {
+		return postRepository.findAllByAuthorId(id);}
 }
