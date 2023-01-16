@@ -5,16 +5,21 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @SuppressWarnings("serial")
 @Embeddable
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class PostLikeKey implements Serializable{
 	
 	@Column(name="post_id")
-	int postId;
+	private Integer postId;
 	
 	@Column(name="user_id")
-	int userId;
+	private Integer userId;
+	
 }
