@@ -11,5 +11,6 @@ import com.revature.models.PostType;
 public interface PostRepository extends JpaRepository<Post, Integer> {
 
     List<Post> findAllByPostType(PostType postType);
-
+    
+    List<Post> findAllByAuthorId(int id);
 }
