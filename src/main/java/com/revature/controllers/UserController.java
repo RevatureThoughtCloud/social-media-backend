@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.annotations.Authorized;
-
+import com.revature.dtos.UserDto;
 import com.revature.models.User;
 import com.revature.services.UserService;
 
@@ -35,18 +35,18 @@ public class UserController {
     // Get followers
     @Authorized
     @GetMapping(value = "/{username}/followers")
-    public ResponseEntity<List<User>> getFollowers(@PathVariable String username, HttpSession session) {
-        // User currentUser = (User) session.getAttribute("user");
-        List<User> l = userService.getMyFollowers(username);
+    public ResponseEntity<List<UserDto>> getFollowers(@PathVariable String username, HttpSession session) {
+
+        List<UserDto> l = userService.getMyFollowers(username);
         return new ResponseEntity<>(l, HttpStatus.ACCEPTED);
     }
 
     // Get following
     @Authorized
     @GetMapping(value = "/{username}/following")
-    public ResponseEntity<List<User>> getFollowing(@PathVariable String username, HttpSession session) {
+    public ResponseEntity<List<UserDto>> getFollowing(@PathVariable String username, HttpSession session) {
         // User currentUser = (User) session.getAttribute("user");
-        List<User> l = userService.getWhoImFollowing(username);
+        List<UserDto> l = userService.getWhoImFollowing(username);
 
         return new ResponseEntity<>(l, HttpStatus.ACCEPTED);
     }
