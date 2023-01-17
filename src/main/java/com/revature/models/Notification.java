@@ -2,9 +2,7 @@ package com.revature.models;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -15,6 +13,7 @@ import javax.persistence.ManyToOne;
 public class Notification {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	Long id;
 	@ManyToOne
 	User recipient;

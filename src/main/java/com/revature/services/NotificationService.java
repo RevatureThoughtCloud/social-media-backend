@@ -17,7 +17,7 @@ public class NotificationService {
 	private NotificationRepository nRepo;
 
 	public long countByUsername(String username) {
-		return nRepo.countByRecipientUsernameAndStatus(username, NotificationStatus.UNREAD);
+		return nRepo.countByRecipientAndStatus(username, NotificationStatus.UNREAD);
 	}
 
 	public Notification createNotification(Notification notification) {
