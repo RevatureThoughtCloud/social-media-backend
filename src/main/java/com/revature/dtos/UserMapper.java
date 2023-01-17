@@ -12,8 +12,8 @@ public class UserMapper {
         dto.setId(user.getId());
         dto.setUserName(user.getUserName());
         dto.setEmail(user.getEmail());
-        dto.setNumOfFollowers(user.getFollowers().size());
-        dto.setNumOfFollowing(user.getFollowing().size());
+        dto.setFollowersCount(user.getFollowers().size());
+        dto.setFollowingsCount(user.getFollowings().size());
         dto.setFirstName(user.getFirstName());
         dto.setLastName(user.getLastName());
         return dto;

@@ -42,13 +42,13 @@ public class User {
 
     @OneToMany(mappedBy = "following", fetch = FetchType.EAGER)
     @JsonIgnore
-    List<Follow> following = new LinkedList<>();
+    List<Follow> followings = new LinkedList<>();
 
     public Long getFollowersCount() {
-        return following.stream().map(f -> f.getFollowing()).count();
+        return followings.stream().map(f -> f.getFollowing()).count();
     }
 
-    public Long getFollowingCount() {
+    public Long getFollowingsCount() {
         return followers.stream().map(f -> f.getFollowed()).count();
     }
 

@@ -14,7 +14,7 @@ public class UserDto {
     private String email;
     private String firstName;
     private String lastName;
-    private int numOfFollowers;
-    private int numOfFollowing;
+    private int followersCount;
+    private int followingsCount;
 
 }
