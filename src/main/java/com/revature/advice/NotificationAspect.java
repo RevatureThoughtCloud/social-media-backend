@@ -57,17 +57,19 @@ public class NotificationAspect {
 	}
 
 
-	/* TODO: fix this based off createfollow stuff
-	@AfterReturning("execution(* com.revature.controllers.FollowController.createFollow(..))")
-	public void createLikeNotification(JoinPoint joinPoint) {
-		Object[] args = joinPoint.getArgs();
-		Like like = (Like) args[0];
-		User sender = like.getUser();
-		User recipient = like.getPost().getAuthor();
-		Notification notification = new Notification(0, recipient, sender, like.getPost(), NotificationType.FOLLOW,
+
+	@AfterReturning(pointcut = "execution(* com.revature.services.UserService.followUser(..))", returning = "result")
+	public void createFollowNotification(Object result) {
+
+		Follow follow = (Follow) result;
+
+		User sender = follow.getFollowed();
+		User recipient = follow.getFollowing();
+
+		Notification notification = new Notification(0L, recipient, sender, null, NotificationType.FOLLOW,
 		NotificationStatus.UNREAD, "");
+
 		nServe.createNotification(notification);
 	}
-	 */
 
 }
