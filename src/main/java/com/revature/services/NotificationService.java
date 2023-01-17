@@ -17,20 +17,20 @@ public class NotificationService {
 	private NotificationRepository nRepo;
 
 	public long countByUsername(String username) {
-		return nRepo.countByRecipientAndStatus(username, NotificationStatus.UNREAD);
+		return nRepo.countByRecipientUserNameAndStatus(username, NotificationStatus.UNREAD);
 	}
 
 	public Notification createNotification(Notification notification) {
 		String message = "";
 		switch(notification.getType()){
 			case COMMENT:
-				message = String.format("%s has commented on your post!", notification.getSender().getUserName());
+				message = " has commented on your post!";
 				break;
 			case LIKE:
-				message = String.format("%s has liked post!", notification.getSender().getUserName());
+				message = " has liked post!";
 				break;
 			case FOLLOW:
-				message = String.format("%s has followed you!", notification.getSender().getUserName());
+				message = " has followed you!";
 				break;
 			default:
 				message = "there seems to be an issue!";

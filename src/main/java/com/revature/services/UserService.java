@@ -46,7 +46,7 @@ public class UserService {
     @Authorized
     // currentUser request to follow user with 'username'
     @Transactional
-    public void followUser(User currentUser, String username) {
+    public Follow followUser(User currentUser, String username) {
 
         // Check if user not trying to follow herself
         if (currentUser.getUserName().equals(username)) {
@@ -65,7 +65,7 @@ public class UserService {
             throw new AlreadyFollowingException();
 
         Follow f = new Follow(curr, followUser);
-        followRepository.save(f);
+        return followRepository.save(f);
     }
 
     @Authorized

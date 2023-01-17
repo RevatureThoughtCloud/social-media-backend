@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
-	long countByRecipientAndStatus(String username, NotificationStatus status);
+	long countByRecipientUserNameAndStatus(String username, NotificationStatus status);
 
 	List<Notification> findAllByRecipientUserName(String username);
 
