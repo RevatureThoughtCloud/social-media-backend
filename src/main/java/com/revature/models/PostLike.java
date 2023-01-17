@@ -28,4 +28,9 @@ public class PostLike {
 	@MapsId("userId")
 	@JoinColumn(name = "user_id")
 	private User user;
+	
+	public void setId() {
+		this.id.setPostId(post.getId());
+		this.id.setUserId(user.getId());
+	}
 }

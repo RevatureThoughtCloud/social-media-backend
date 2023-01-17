@@ -35,11 +35,22 @@ public class PostService {
 		return postRepository.findAllByPostType(PostType.Top);
 	}
 	
+	public Optional<Post> getById(int postId) {
+		return postRepository.findById(postId);
+	}
+	
 	public PostLike insertLike(PostLike like) {
+		Post likedPost = like.getPost();
+		likedPost.setLikeCount(likedPost.getLikeCount() + 1);
+		postRepository.save(likedPost);
 		return postLikeRepository.save(like);
 	}
 	
 	public void deleteLike(PostLike like) {
+		Post likedPost = like.getPost();
+		likedPost.setLikeCount(likedPost.getLikeCount() - 1);
+		postRepository.save(likedPost);
+		like.setId();
 		postLikeRepository.delete(like);
 	}
 	

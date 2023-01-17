@@ -1,6 +1,7 @@
 package com.revature.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +43,12 @@ public class PostController {
     public ResponseEntity<Post> upsertPost(@RequestBody Post post) {
     	return ResponseEntity.ok(this.postService.upsert(post));
     }
+    
+    @GetMapping("/{postId}")
+    public ResponseEntity<Post> getPostById(@PathVariable int postId) {
+    	Optional<Post> post = postService.getById(postId);
+    	return ResponseEntity.ok(post.get());
+    }
 
     @GetMapping("/feed")
     public ResponseEntity<List<Post>> getAllTopPosts() {
@@ -53,6 +60,7 @@ public class PostController {
     	return ResponseEntity.ok(this.postService.likeExists(new PostLikeKey(postId, userId)));
     }
     
+    
     @PostMapping("/like")
     public ResponseEntity<PostLike> postNewLike(@RequestBody PostLike like) {
     	return ResponseEntity.ok(this.postService.insertLike(like));
@@ -61,7 +69,7 @@ public class PostController {
     @DeleteMapping("/like")
     public ResponseEntity<?> deleteLike(@RequestBody PostLike like) {
     	this.postService.deleteLike(like);
-    	return new ResponseEntity<>(true, HttpStatus.NOT_FOUND);
+    	return new ResponseEntity<>(true, HttpStatus.OK);
     }
     
 
