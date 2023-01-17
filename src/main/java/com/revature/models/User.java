@@ -1,5 +1,16 @@
 package com.revature.models;
 
+import java.util.Set;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,6 +47,11 @@ public class User {
     private String lastName;
     private String userName;
 
+    @OneToMany(mappedBy="user")
+    @JsonIgnore
+	private Set<PostLike> likes;
+    
+
     @OneToMany(mappedBy = "followed", fetch = FetchType.EAGER)
     @JsonIgnore
     List<Follow> followers = new LinkedList<>();
@@ -44,6 +60,15 @@ public class User {
     @JsonIgnore
     List<Follow> followings = new LinkedList<>();
 
+    public User(int id, String email, String password, String firstName, String lastName) {
+    	this.id = id;
+    	this.email = email;
+    	this.password = password;
+    	this.firstName = firstName;
+    	this.lastName = lastName;
+    	this.likes = null;
+    }
+
     public Long getFollowersCount() {
         return followings.stream().map(f -> f.getFollowing()).count();
     }
@@ -51,5 +76,6 @@ public class User {
     public Long getFollowingsCount() {
         return followers.stream().map(f -> f.getFollowed()).count();
     }
+
 
 }
