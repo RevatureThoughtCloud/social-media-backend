@@ -2,6 +2,7 @@ package com.revature.services;
 
 import com.revature.annotations.Authorized;
 import com.revature.dtos.UserDto;
+import com.revature.dtos.UserMapper;
 import com.revature.exceptions.AlreadyFollowingException;
 import com.revature.exceptions.FollowingNotAllowedException;
 import com.revature.exceptions.NoFollowingRelationshipExistsException;
@@ -65,7 +66,8 @@ public class UserService {
             throw new AlreadyFollowingException();
 
         Follow f = new Follow(curr, followUser);
-        return followRepository.save(f);
+        followRepository.save(f);
+        return f;
     }
 
     @Authorized
@@ -94,19 +96,19 @@ public class UserService {
 
     @Authorized
     // Gets userId's followers
-    public List<User> getMyFollowers(String username) {
+    public List<UserDto> getMyFollowers(String username) {
         List<Follow> f = followRepository.findByFollowedUserName(username);
 
-        return f.stream().map((user1) -> user1.getFollowing()).collect(Collectors.toList());
+        return f.stream().map((user1) -> UserMapper.toDto(user1.getFollowing())).collect(Collectors.toList());
 
     }
 
     @Authorized
     // Gets who userId is following
-    public List<User> getWhoImFollowing(String username) {
+    public List<UserDto> getWhoImFollowing(String username) {
         List<Follow> f = followRepository.findByFollowingUserName(username);
 
-        return f.stream().map((user1) -> user1.getFollowed()).collect(Collectors.toList());
+        return f.stream().map((user1) -> UserMapper.toDto(user1.getFollowed())).collect(Collectors.toList());
     }
 
 }
