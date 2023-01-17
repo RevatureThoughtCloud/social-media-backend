@@ -27,7 +27,7 @@ public class NotificationService {
 				message = " has commented on your post!";
 				break;
 			case LIKE:
-				message = " has liked post!";
+				message = " has liked your post!";
 				break;
 			case FOLLOW:
 				message = " has followed you!";

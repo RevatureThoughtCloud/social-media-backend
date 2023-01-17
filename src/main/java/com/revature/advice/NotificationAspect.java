@@ -18,19 +18,18 @@ public class NotificationAspect {
 	NotificationService nServe;
 
 
-	/* TODO: fix this based of like stuff
-	@AfterReturning("execution(* com.revature.controllers.LikeController.createLike(..))")
-	public void createLikeNotification(JoinPoint joinPoint) {
-		Object[] args = joinPoint.getArgs();
-		Like like = (Like) args[0];
+
+	@AfterReturning(pointcut = "execution(* com.revature.services.PostService.insertLike(..))", returning = "result")
+	public void createLikeNotification(JoinPoint joinPoint, Object result) {
+
+		PostLike like = (PostLike) result;
 		User sender = like.getUser();
 		User recipient = like.getPost().getAuthor();
-		Notification notification = new Notification(0, recipient, sender, like.getPost(), NotificationType.LIKE,
+		Notification notification = new Notification(0L, recipient, sender, like.getPost(), NotificationType.LIKE,
 		NotificationStatus.UNREAD, "");
 		nServe.createNotification(notification);
-	}
-	*/
 
+	}
 
 	@AfterReturning(pointcut = "execution(* com.revature.services.PostService.upsert(..))", returning = "result")
 	public void createCommentNotification(JoinPoint joinPoint, Object result) {
