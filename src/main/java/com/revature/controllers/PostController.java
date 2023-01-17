@@ -1,9 +1,11 @@
 package com.revature.controllers;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
+import com.revature.models.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,6 +23,8 @@ import com.revature.models.PostLike;
 import com.revature.models.PostLikeKey;
 import com.revature.services.PostService;
 
+import javax.servlet.http.HttpSession;
+
 @RestController
 @RequestMapping("/post")
 @CrossOrigin(origins = {"http://localhost:4200", "http://localhost:3000"}, allowCredentials = "true")
@@ -37,7 +41,12 @@ public class PostController {
     public ResponseEntity<List<Post>> getAllPosts() {
     	return ResponseEntity.ok(this.postService.getAll());
     }
-    
+
+    @GetMapping("/author/{id}")
+    public ResponseEntity<List<Post>> getAllByAuthor(@PathVariable int id) {
+        return ResponseEntity.ok(this.postService.getAllByAuthorId(id));
+    }
+
     @Authorized
     @PutMapping
     public ResponseEntity<Post> upsertPost(@RequestBody Post post) {
