@@ -20,6 +20,7 @@ public class AuthService {
     }
 
     public User register(User user) {
+        System.out.println("creating user: "+user);
         return userService.save(user);
     }
 }
