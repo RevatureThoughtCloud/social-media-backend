@@ -1,5 +1,25 @@
 server:
   port: 8080
+#
+#spring:
+#  sql:
+#    init:
+#      mode: always
+#  jpa:
+#    hibernate:
+#      ddl-auto: create
+#      format-sql: false
+#    database-platform: org.hibernate.dialect.PostgreSQLDialect
+#    defer-datasource-initialization: true
+#    show-sql: true
+#
+#  datasource:
+#    url: ${DB_URL}thoughtcloud
+#    driver-class-name: org.postgresql.Driver
+#    username: ${DB_USERNAME}
+#    password: ${DB_PASSWORD}
+
+#
 spring:
   jpa:
     hibernate:
@@ -16,3 +36,4 @@ spring:
     password: password
   h2:
     console.enabled: true
+

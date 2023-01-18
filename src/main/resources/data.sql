@@ -1,3 +1,4 @@
+
 INSERT INTO users (id, email, password, first_name, last_name, user_name) VALUES (
     1,
     'abe@rev.com',
