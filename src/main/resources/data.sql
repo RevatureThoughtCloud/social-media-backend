@@ -1,5 +1,5 @@
-INSERT INTO users (id, email, password, first_name, last_name, user_name) VALUES (
-    1,
+
+INSERT INTO users ( email, password, first_name, last_name, user_name) VALUES (
     'abe@rev.com',
     'password',
     'Abraham',
@@ -7,8 +7,7 @@ INSERT INTO users (id, email, password, first_name, last_name, user_name) VALUES
     'abarboza'
 );
 
-INSERT INTO users (id, email, password, first_name, last_name, user_name) VALUES (
-    2,
+INSERT INTO users ( email, password, first_name, last_name, user_name) VALUES (
     'aj@rev.com',
     'password',
     'AJ',
@@ -16,8 +15,8 @@ INSERT INTO users (id, email, password, first_name, last_name, user_name) VALUES
     'ajbarea'
 );
 
-INSERT INTO users (id, email, password, first_name, last_name, user_name) VALUES (
-    3,
+INSERT INTO users ( email, password, first_name, last_name, user_name) VALUES (
+
     'elian@rev.com',
     'password',
     'Elian',
@@ -25,8 +24,7 @@ INSERT INTO users (id, email, password, first_name, last_name, user_name) VALUES
     'efelix'
 );
 
-INSERT INTO users (id, email, password, first_name, last_name, user_name) VALUES (
-    4,
+INSERT INTO users ( email, password, first_name, last_name, user_name) VALUES (
     'julio@rev.com',
     'password',
     'Julio',
@@ -34,8 +32,7 @@ INSERT INTO users (id, email, password, first_name, last_name, user_name) VALUES
     'jcanales'
 );
 
-INSERT INTO users (id, email, password, first_name, last_name, user_name) VALUES (
-    5,
+INSERT INTO users ( email, password, first_name, last_name, user_name) VALUES (
     'seth@rev.com',
     'password',
     'Seth',
@@ -43,8 +40,8 @@ INSERT INTO users (id, email, password, first_name, last_name, user_name) VALUES
     'sethevry'
 );
 
-insert into users (id, first_name, last_name, email, user_name, password) values (6, 'Kalindi', 'Grasser', 'kgrasser0@chronoengine.com', 'kgrasser0', 'password');
-insert into users (id, first_name, last_name, email, user_name, password) values ( 7,'Gaby', 'Kase', 'gkase1@sfgate.com', 'gkase1', 'password');
+insert into users ( first_name, last_name, email, user_name, password) values ( 'Kalindi', 'Grasser', 'kgrasser0@chronoengine.com', 'kgrasser0', 'password');
+insert into users ( first_name, last_name, email, user_name, password) values ( 'Gaby', 'Kase', 'gkase1@sfgate.com', 'gkase1', 'password');
 
 insert into follows (FOLLOWED_ID , FOLLOWING_ID) values (4,1);
 insert into follows (FOLLOWED_ID , FOLLOWING_ID) values (4,6);

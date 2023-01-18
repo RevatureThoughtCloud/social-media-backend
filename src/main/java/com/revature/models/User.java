@@ -34,8 +34,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 })
 public class User {
 
-    public User(int i, String email2, String password2, String firstName2, String lastName2, String username2) {
-        this.id = i;
+    public User(String email2, String password2, String firstName2, String lastName2, String username2) {
         this.email = email2;
         this.password = password2;
         this.firstName = firstName2;
