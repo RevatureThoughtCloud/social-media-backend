@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,7 +26,8 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Data
+@Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -53,10 +56,9 @@ public class User {
     private String lastName;
     private String userName;
 
-    @OneToMany(mappedBy="user")
+    @OneToMany(mappedBy = "user")
     @JsonIgnore
-	private Set<PostLike> likes;
-    
+    private Set<PostLike> likes;
 
     @OneToMany(mappedBy = "followed", fetch = FetchType.EAGER)
     @JsonIgnore
@@ -67,12 +69,12 @@ public class User {
     List<Follow> followings = new LinkedList<>();
 
     public User(int id, String email, String password, String firstName, String lastName) {
-    	this.id = id;
-    	this.email = email;
-    	this.password = password;
-    	this.firstName = firstName;
-    	this.lastName = lastName;
-    	this.likes = null;
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.likes = null;
     }
 
     public Long getFollowersCount() {
@@ -83,6 +85,5 @@ public class User {
     public Long getFollowingsCount() {
         return followings.stream().map(f -> f.getFollowed()).count();
     }
-
 
 }
