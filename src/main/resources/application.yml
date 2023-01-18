@@ -2,9 +2,12 @@ server:
   port: 8080
 #
 #spring:
+#
+# this is so postgres reads the data.sql
 #  sql:
 #    init:
 #      mode: always
+#
 #  jpa:
 #    hibernate:
 #      ddl-auto: create
