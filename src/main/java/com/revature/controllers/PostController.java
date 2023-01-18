@@ -70,11 +70,13 @@ public class PostController {
     }
     
     
+    //Change response to post to update like count?
     @PostMapping("/like")
     public ResponseEntity<PostLike> postNewLike(@RequestBody PostLike like) {
     	return ResponseEntity.ok(this.postService.insertLike(like));
     }
     
+  //Change response to post to update like count?
     @DeleteMapping("/like")
     public ResponseEntity<?> deleteLike(@RequestBody PostLike like) {
     	this.postService.deleteLike(like);
