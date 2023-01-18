@@ -24,6 +24,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class User {
 
     public User(int i, String email2, String password2, String firstName2, String lastName2, String username2) {
+        this.id = i;
+        this.email = email2;
+        this.password = password2;
+        this.firstName = firstName2;
+        this.lastName = lastName2;
+        this.userName = username2;
     }
 
     @Id
@@ -45,11 +51,12 @@ public class User {
     List<Follow> followings = new LinkedList<>();
 
     public Long getFollowersCount() {
-        return followings.stream().map(f -> f.getFollowing()).count();
+
+        return followers.stream().map(f -> f.getFollowing()).count();
     }
 
     public Long getFollowingsCount() {
-        return followers.stream().map(f -> f.getFollowed()).count();
+        return followings.stream().map(f -> f.getFollowed()).count();
     }
 
 }
