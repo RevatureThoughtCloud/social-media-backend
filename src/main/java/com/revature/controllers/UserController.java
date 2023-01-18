@@ -43,7 +43,7 @@ public class UserController {
 
     // Get following
     @Authorized
-    @GetMapping(value = "/{username}/following")
+    @GetMapping(value = "/{username}/followings")
     public ResponseEntity<List<UserDto>> getFollowing(@PathVariable String username, HttpSession session) {
         // User currentUser = (User) session.getAttribute("user");
         List<UserDto> l = userService.getWhoImFollowing(username);
