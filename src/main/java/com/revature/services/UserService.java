@@ -1,18 +1,43 @@
 package com.revature.services;
 
+import com.revature.annotations.Authorized;
+import com.revature.dtos.UserDto;
+import com.revature.dtos.UserMapper;
+import com.revature.exceptions.AlreadyFollowingException;
+import com.revature.exceptions.FollowingNotAllowedException;
+import com.revature.exceptions.NoFollowingRelationshipExistsException;
+import com.revature.exceptions.UserNotFoundException;
+import com.revature.models.Follow;
 import com.revature.models.User;
+import com.revature.models.idclasses.FollowerId;
+import com.revature.repositories.FollowRepository;
 import com.revature.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final FollowRepository followRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, FollowRepository followRepository) {
         this.userRepository = userRepository;
+
+        this.followRepository = followRepository;
+
+    }
+
+    public Optional<User> getUserById(int id) {
+        return userRepository.findById(id);
     }
 
     public Optional<User> findByCredentials(String email, String password) {
@@ -22,4 +47,74 @@ public class UserService {
     public User save(User user) {
         return userRepository.save(user);
     }
+
+    @Authorized
+    // currentUser request to follow user with 'username'
+    @Transactional
+    public Follow followUser(User currentUser, String username) {
+
+        // Check if user not trying to follow herself
+        if (currentUser.getUserName().equals(username)) {
+            throw new FollowingNotAllowedException();
+        }
+
+        User followUser = userRepository.findByUserName(username)
+                .orElseThrow(UserNotFoundException::new);
+
+        User curr = userRepository.findByUserName(currentUser.getUserName())
+                .orElseThrow(UserNotFoundException::new);
+
+        // Check if already following
+        Optional<Follow> foll = followRepository.findById(new FollowerId(followUser.getId(), currentUser.getId()));
+        if (foll.isPresent())
+            throw new AlreadyFollowingException();
+
+        Follow f = new Follow(curr, followUser);
+        followRepository.save(f);
+        return f;
+    }
+
+    @Authorized
+    // currentUser request to unfollow user with 'username'
+    @Transactional
+    public void unFollowUser(User currentUser, String username) {
+
+        // Check if user not trying to unfollow herself
+        if (currentUser.getUserName().equals(username)) {
+            throw new FollowingNotAllowedException();
+        }
+
+        User followUser = userRepository.findByUserName(username)
+                .orElseThrow(UserNotFoundException::new);
+
+        User curr = userRepository.findByUserName(currentUser.getUserName())
+                .orElseThrow(UserNotFoundException::new);
+
+        // Check if existing follow relationship exists
+        Follow foll = followRepository.findById(new FollowerId(followUser.getId(), currentUser.getId()))
+                .orElseThrow(NoFollowingRelationshipExistsException::new);
+
+        followRepository.delete(foll);
+
+    }
+
+    @Authorized
+    // Gets userId's followers
+    public List<UserDto> getMyFollowers(String username) {
+        List<Follow> f = followRepository.findByFollowedUserName(username);
+
+        return f.stream().map((user1) -> UserMapper.toDto(user1.getFollowing())).collect(Collectors.toList());
+
+    }
+
+    @Authorized
+    // Gets who userId is following
+    public List<UserDto> getWhoImFollowing(String username) {
+        List<Follow> f = followRepository.findByFollowingUserName(username);
+
+        return f.stream().map((user1) -> UserMapper.toDto(user1.getFollowed())).collect(Collectors.toList());
+    }
+
+
+
 }
