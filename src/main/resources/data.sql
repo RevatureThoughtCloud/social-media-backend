@@ -1,5 +1,6 @@
 
-INSERT INTO users ( email, password, first_name, last_name, user_name) VALUES (
+INSERT INTO users ( about_me, email, password, first_name, last_name, user_name) VALUES (
+    'I put the ''pro'' in procrastination',
     'abe@rev.com',
     'password',
     'Abraham',
@@ -7,7 +8,8 @@ INSERT INTO users ( email, password, first_name, last_name, user_name) VALUES (
     'abarboza'
 );
 
-INSERT INTO users ( email, password, first_name, last_name, user_name) VALUES (
+INSERT INTO users ( about_me, email, password, first_name, last_name, user_name) VALUES (
+    'I may not know how to socialize, but I can code circles around your average human.',
     'aj@rev.com',
     'password',
     'AJ',
@@ -15,8 +17,8 @@ INSERT INTO users ( email, password, first_name, last_name, user_name) VALUES (
     'ajbarea'
 );
 
-INSERT INTO users ( email, password, first_name, last_name, user_name) VALUES (
-
+INSERT INTO users (about_me,  email, password, first_name, last_name, user_name) VALUES (
+    'I prefer debugging to socializing, but let''s see how this goes.',
     'elian@rev.com',
     'password',
     'Elian',
@@ -24,7 +26,8 @@ INSERT INTO users ( email, password, first_name, last_name, user_name) VALUES (
     'efelix'
 );
 
-INSERT INTO users ( email, password, first_name, last_name, user_name) VALUES (
+INSERT INTO users ( about_me, email, password, first_name, last_name, user_name) VALUES (
+    'I may not have a life, but I have a great career as a programmer.',
     'julio@rev.com',
     'password',
     'Julio',
@@ -32,7 +35,8 @@ INSERT INTO users ( email, password, first_name, last_name, user_name) VALUES (
     'jcanales'
 );
 
-INSERT INTO users ( email, password, first_name, last_name, user_name) VALUES (
+INSERT INTO users (about_me,  email, password, first_name, last_name, user_name) VALUES (
+    'I speak fluent Java, TypeScript, and sarcasm.',
     'seth@rev.com',
     'password',
     'Seth',
@@ -98,7 +102,7 @@ INSERT INTO posts (image_url, post_type, text, author_id, like_count) VALUES (
 
 INSERT INTO posts (post_type, text, author_id, like_count) VALUES (
     0,
-    'This site blows; Twitter is better',
+    'This site blows; Twitter is better amiright?!',
     4,
     0
 );
@@ -106,7 +110,7 @@ INSERT INTO posts (post_type, text, author_id, like_count) VALUES (
 INSERT INTO posts (image_url, post_type, text, author_id, like_count) VALUES (
     'https://previews.123rf.com/images/lenanichizhenova/lenanichizhenova1707/lenanichizhenova170700205/82512191-bored-husband-waiting-for-wife.jpg',
     0,
-    'I cant believe my wife made this stupid account for me...',
+    'I cant believe my wife made another social account for me...',
     3,
     0
 );

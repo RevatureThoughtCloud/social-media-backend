@@ -1,30 +1,15 @@
 package com.revature.models;
 
-import java.util.Set;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import javax.persistence.*;
 import java.util.LinkedList;
 import java.util.List;
-
-import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -54,6 +39,7 @@ public class User {
     private String firstName;
     private String lastName;
     private String userName;
+    private String aboutMe = "About Me";
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
