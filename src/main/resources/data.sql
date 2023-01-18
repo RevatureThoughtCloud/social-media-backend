@@ -76,8 +76,7 @@ insert into follows (FOLLOWED_ID , FOLLOWING_ID) values (2,6);
 insert into follows (FOLLOWED_ID , FOLLOWING_ID) values (3,6);
 insert into follows (FOLLOWED_ID , FOLLOWING_ID) values (4,7);
 
-
-INSERT INTO posts (post_type, text, author_id) VALUES (
+INSERT INTO posts (post_type, text, author_id, like_count) VALUES (
     0,
     'I''m so excited to be the first user of ThoughtCloud social!!',
     1,
