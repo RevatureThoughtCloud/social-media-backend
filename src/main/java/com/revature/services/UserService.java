@@ -36,6 +36,10 @@ public class UserService {
 
     }
 
+    public Optional<User> getUserById(int id) {
+        return userRepository.findById(id);
+    }
+
     public Optional<User> findByCredentials(String email, String password) {
         return userRepository.findByEmailAndPassword(email, password);
     }
@@ -110,5 +114,7 @@ public class UserService {
 
         return f.stream().map((user1) -> UserMapper.toDto(user1.getFollowed())).collect(Collectors.toList());
     }
+
+
 
 }
