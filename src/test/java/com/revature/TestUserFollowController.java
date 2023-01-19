@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
-
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -32,6 +32,7 @@ import static org.hamcrest.Matchers.*;
 @SpringBootTest(classes = SocialMediaApplication.class)
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@Sql(scripts = "resources/data.sql")
 public class TestUserFollowController {
 
         String followUser = "/user/follow/";
@@ -62,8 +63,8 @@ public class TestUserFollowController {
                 this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
                                 .build();
 
-                testUser1 = userRepo.findByUserName("abarboza").orElse(new User());
-                testUser2 = userRepo.findByUserName("efelix").orElse(new User());
+                testUser1 = userRepo.findByUserName("test1").orElse(new User());
+                testUser2 = userRepo.findByUserName("test2").orElse(new User());
 
                 sessionattrUser1 = new HashMap<String, Object>();
                 sessionattrUser1.put("user", testUser1);
@@ -78,7 +79,7 @@ public class TestUserFollowController {
         }
 
         public String constructGetFollowingUrl(String username) {
-                return "/user/" + username + "/following";
+                return "/user/" + username + "/followings";
         }
 
         @Test
@@ -90,8 +91,7 @@ public class TestUserFollowController {
                                 .contentType(APPLICATION_JSON)
                                 .content(""))
                                 .andDo(print())
-                                .andExpect(status().isAccepted())
-                                .andExpect(jsonPath("$").doesNotExist());
+                                .andExpect(status().isAccepted()).andExpect(jsonPath("$").doesNotExist());
 
         }
 

@@ -2,6 +2,7 @@ package com.revature.controllers;
 
 import com.revature.annotations.Authorized;
 import com.revature.dtos.UserDto;
+import com.revature.dtos.UserMapper;
 import com.revature.models.User;
 import com.revature.services.UserService;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,8 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
-@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:3000", "http://localhost:8080" }, allowCredentials = "true", allowedHeaders = "*")
+@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:3000",
+        "http://localhost:8080" }, allowCredentials = "true", allowedHeaders = "*")
 public class UserController {
 
     private UserService userService;
@@ -23,9 +25,13 @@ public class UserController {
         this.userService = userService;
     }
 
+    @Authorized
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable int id) {
-        Optional<User> user = userService.getUserById(id);
+    public ResponseEntity<UserDto> getUserById(@PathVariable int id, HttpSession session) {
+
+        User currentUser = (User) session.getAttribute("user");
+        Optional<UserDto> user = userService.getUserById(id, currentUser.getId());
+
         if (user.isPresent())
             return new ResponseEntity<>(user.get(), HttpStatus.OK);
         else

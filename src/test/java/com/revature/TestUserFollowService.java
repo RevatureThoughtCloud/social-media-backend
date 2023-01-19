@@ -48,12 +48,13 @@ import static org.hamcrest.Matchers.*;
 @SpringBootTest(classes = SocialMediaApplication.class)
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@Sql(scripts = "resources/data.sql")
 public class TestUserFollowService {
 
     String followUser = "/user/follow/";
     String unFollowUser = "/user/unfollow/";
     String getFollowers = "/user/followers";
-    String getFollowing = "/user/following";
+    String getFollowing = "/user/followings";
 
     @Autowired
     private WebApplicationContext context;
@@ -78,8 +79,8 @@ public class TestUserFollowService {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
                 .build();
 
-        testUser1 = userRepo.findByUserName("abarboza").orElse(new User());
-        testUser2 = userRepo.findByUserName("efelix").orElse(new User());
+        testUser1 = userRepo.findByUserName("test1").orElse(new User());
+        testUser2 = userRepo.findByUserName("test2").orElse(new User());
 
         sessionattrUser1 = new HashMap<String, Object>();
         sessionattrUser1.put("user", testUser1);
