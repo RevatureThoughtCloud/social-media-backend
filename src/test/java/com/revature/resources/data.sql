@@ -1,13 +1,12 @@
+
 INSERT INTO users (id, email, password, first_name, last_name, user_name) VALUES (
-    10000000,
-    'test1@rev.com',
+   10000,
+   'test1@rev.com',
     'password',
     'Abraham',
     'Barboza',
     'test1'
 );
-
-
 
 INSERT INTO users (id, email, password, first_name, last_name, user_name) VALUES (
    10000001,

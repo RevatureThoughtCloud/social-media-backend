@@ -9,10 +9,14 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,6 +30,7 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+@EqualsAndHashCode
 @Getter
 @Setter
 @Entity
@@ -55,7 +60,7 @@ public class User {
     private String lastName;
     private String userName;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<PostLike> likes;
 
@@ -67,13 +72,14 @@ public class User {
     @JsonIgnore
     List<Follow> followings = new LinkedList<>();
 
-    public User(int id, String email, String password, String firstName, String lastName) {
+    public User(int id, String email, String password, String firstName, String lastName, String userName) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.likes = null;
+        this.userName = userName;
     }
 
     public Long getFollowersCount() {
@@ -83,6 +89,10 @@ public class User {
 
     public Long getFollowingsCount() {
         return followings.stream().map(f -> f.getFollowed()).count();
+    }
+
+    public boolean isBeingFollowedBy(int userId) {
+        return followers.stream().anyMatch(x -> x.getFollowing().getId() == userId);
     }
 
 }
