@@ -44,8 +44,8 @@ INSERT INTO users (about_me,  email, password, first_name, last_name, user_name)
     'sethevry'
 );
 
-insert into users ( first_name, last_name, email, user_name, password) values ( 'Kalindi', 'Grasser', 'kgrasser0@chronoengine.com', 'kgrasser0', 'password');
-insert into users ( first_name, last_name, email, user_name, password) values ( 'Gaby', 'Kase', 'gkase1@sfgate.com', 'gkase1', 'password');
+insert into users ( about_me, first_name, last_name, email, user_name, password) values ( 'About Me', 'Kalindi', 'Grasser', 'kgrasser0@chronoengine.com', 'kgrasser0', 'password');
+insert into users ( about_me, first_name, last_name, email, user_name, password) values ( 'About Me', 'Gaby', 'Kase', 'gkase1@sfgate.com', 'gkase1', 'password');
 
 insert into follows (FOLLOWED_ID , FOLLOWING_ID) values (4,1);
 insert into follows (FOLLOWED_ID , FOLLOWING_ID) values (4,6);
