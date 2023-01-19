@@ -36,6 +36,27 @@ public class UserService {
 
     }
 
+    public Optional<User> getUserById(int id) {
+
+        return userRepository.findById(id);
+    }
+
+    public Optional<UserDto> getUserById(int user2Id, int currentUserId) {
+
+        Optional<User> user2 = userRepository.findById(user2Id);
+        UserDto u2;
+        if (user2.isPresent()) {
+            u2 = UserMapper.toDto(user2.get());
+            u2.setFollowedByCurrentUser(user2.get().isBeingFollowedBy(currentUserId));
+
+        } else {
+            throw new UserNotFoundException();
+        }
+      
+
+        return Optional.of(u2);
+    }
+
     public Optional<User> findByCredentials(String email, String password) {
         return userRepository.findByEmailAndPassword(email, password);
     }

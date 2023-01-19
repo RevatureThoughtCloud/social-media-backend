@@ -16,5 +16,6 @@ public class UserDto {
     private String lastName;
     private int followersCount;
     private int followingsCount;
+    private boolean followedByCurrentUser;
 
 }
