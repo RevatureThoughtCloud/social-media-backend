@@ -39,7 +39,7 @@ public class User {
     private String userName;
     private String aboutMe = "About Me";
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user")
     @JsonIgnore
     private Set<PostLike> likes;
 
