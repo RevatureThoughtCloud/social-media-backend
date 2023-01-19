@@ -1,13 +1,38 @@
 server:
   port: 8080
+#
+#spring:
+#
+# this is so postgres reads the data.sql
+#  sql:
+#    init:
+#      mode: always
+#
+#  jpa:
+#    hibernate:
+#      ddl-auto: create
+#      format-sql: false
+#    database-platform: org.hibernate.dialect.PostgreSQLDialect
+#    defer-datasource-initialization: true
+#    show-sql: true
+#
+#  datasource:
+#    url: ${DB_URL}thoughtcloud
+#    driver-class-name: org.postgresql.Driver
+#    username: ${DB_USERNAME}
+#    password: ${DB_PASSWORD}
+
+#
 spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
       format_sql: true
+      enable_lazy_load_no_trans: true
     database-platform: org.hibernate.dialect.H2Dialect
     defer-datasource-initialization: true
     show-sql: true
+    enable_lazy_load_no_trans: true
 
   datasource:
     url: jdbc:h2:mem:memdb
@@ -16,3 +41,4 @@ spring:
     password: password
   h2:
     console.enabled: true
+
