@@ -32,7 +32,7 @@ import static org.hamcrest.Matchers.*;
 @SpringBootTest(classes = SocialMediaApplication.class)
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-
+@Sql(scripts = "resources/data.sql")
 public class TestUserFollowController {
 
         String followUser = "/user/follow/";
@@ -91,8 +91,7 @@ public class TestUserFollowController {
                                 .contentType(APPLICATION_JSON)
                                 .content(""))
                                 .andDo(print())
-                                .andExpect(status().isAccepted())
-                                .andExpect(jsonPath("$").doesNotExist());
+                                .andExpect(status().isAccepted()).andExpect(jsonPath("$").doesNotExist());
 
         }
 
