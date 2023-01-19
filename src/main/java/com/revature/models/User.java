@@ -60,7 +60,7 @@ public class User {
     private String lastName;
     private String userName;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user")
     @JsonIgnore
     private Set<PostLike> likes;
 
