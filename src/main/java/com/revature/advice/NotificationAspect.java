@@ -62,8 +62,8 @@ public class NotificationAspect {
 
 		Follow follow = (Follow) result;
 
-		User sender = follow.getFollowed();
-		User recipient = follow.getFollowing();
+		User sender = follow.getFollowing();
+		User recipient = follow.getFollowed();
 
 		Notification notification = new Notification(0L, recipient, sender, null, NotificationType.FOLLOW,
 		NotificationStatus.UNREAD, "");
