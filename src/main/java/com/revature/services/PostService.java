@@ -64,4 +64,8 @@ public class PostService {
 		return exists.isPresent();
 		
 	}
+
+	public void deleteById(int postId) {
+		postRepository.deleteById(postId);
+	}
 }

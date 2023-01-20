@@ -44,14 +44,14 @@ public class NotificationAspect {
 		if(comments.size() > 0) {
 
 			Post newPost = comments.get(comments.size() - 1);
-
 			User sender = newPost.getAuthor();
 			User recipient = post.getAuthor();
+			if(sender != recipient) {
+				Notification notification = new Notification(0L, recipient, sender, newPost, NotificationType.COMMENT,
+						NotificationStatus.UNREAD, "");
 
-			Notification notification = new Notification(0L, recipient, sender, newPost, NotificationType.COMMENT,
-					NotificationStatus.UNREAD, "");
-
-			nServe.createNotification(notification);
+				nServe.createNotification(notification);
+			}
 		}
 	}
 
