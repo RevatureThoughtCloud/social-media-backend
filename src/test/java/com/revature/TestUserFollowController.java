@@ -90,7 +90,7 @@ public class TestUserFollowController {
                 this.mockMvc.perform(post(followUser + testUser2.getUserName()).sessionAttrs(sessionattrUser1)
                                 .contentType(APPLICATION_JSON)
                                 .content(""))
-                                .andDo(print())
+
                                 .andExpect(status().isAccepted()).andExpect(jsonPath("$").doesNotExist());
 
         }
@@ -103,7 +103,7 @@ public class TestUserFollowController {
                 this.mockMvc.perform(post(followUser + "randomusername").sessionAttrs(sessionattrUser1)
                                 .contentType(APPLICATION_JSON)
                                 .content(""))
-                                .andDo(print())
+
                                 .andExpect(status().isNotFound())
                                 .andExpect(jsonPath("$").isString());
 
@@ -119,7 +119,7 @@ public class TestUserFollowController {
                                 testUser2.getUserName()).sessionAttrs(sessionattrUser1)
                                 .contentType(APPLICATION_JSON)
                                 .content(""))
-                                .andDo(print())
+
                                 .andExpect(status().isAccepted())
                                 .andExpect(jsonPath("$").doesNotExist());
 
@@ -127,7 +127,7 @@ public class TestUserFollowController {
                 this.mockMvc.perform(post(followUser + testUser2.getUserName()).sessionAttrs(sessionattrUser1)
                                 .contentType(APPLICATION_JSON)
                                 .content(""))
-                                .andDo(print())
+
                                 .andExpect(status().isConflict())
                                 .andExpect(jsonPath("$").isString());
 
@@ -141,7 +141,7 @@ public class TestUserFollowController {
                 this.mockMvc.perform(post(followUser + testUser1.getUserName()).sessionAttrs(sessionattrUser1)
                                 .contentType(APPLICATION_JSON)
                                 .content(""))
-                                .andDo(print())
+
                                 .andExpect(status().isBadRequest())
                                 .andExpect(jsonPath("$").isString());
 
@@ -156,7 +156,7 @@ public class TestUserFollowController {
                                 testUser2.getUserName()).sessionAttrs(sessionattrUser1)
                                 .contentType(APPLICATION_JSON)
                                 .content(""))
-                                .andDo(print())
+
                                 .andExpect(status().isAccepted())
                                 .andExpect(jsonPath("$").doesNotExist());
 
@@ -164,7 +164,7 @@ public class TestUserFollowController {
                 this.mockMvc.perform(delete(unFollowUser + testUser2.getUserName()).sessionAttrs(sessionattrUser1)
                                 .contentType(APPLICATION_JSON)
                                 .content(""))
-                                .andDo(print())
+
                                 .andExpect(status().isAccepted())
                                 .andExpect(jsonPath("$").doesNotExist());
 
@@ -178,7 +178,7 @@ public class TestUserFollowController {
                 this.mockMvc.perform(delete(unFollowUser + testUser2.getUserName()).sessionAttrs(sessionattrUser1)
                                 .contentType(APPLICATION_JSON)
                                 .content(""))
-                                .andDo(print())
+
                                 .andExpect(status().isNotFound())
                                 .andExpect(jsonPath("$").isString());
 
@@ -192,7 +192,7 @@ public class TestUserFollowController {
                 this.mockMvc.perform(delete(unFollowUser + testUser1.getUserName()).sessionAttrs(sessionattrUser1)
                                 .contentType(APPLICATION_JSON)
                                 .content(""))
-                                .andDo(print())
+
                                 .andExpect(status().isBadRequest())
                                 .andExpect(jsonPath("$").isString());
 
@@ -207,7 +207,7 @@ public class TestUserFollowController {
 
                                                 .contentType(APPLICATION_JSON)
                                                 .content(""))
-                                .andDo(print())
+
                                 .andExpect(status().isAccepted())
                                 .andExpect(jsonPath("$", hasSize(0)));
 
@@ -221,7 +221,7 @@ public class TestUserFollowController {
                                 testUser2.getUserName()).sessionAttrs(sessionattrUser1)
                                 .contentType(APPLICATION_JSON)
                                 .content(""))
-                                .andDo(print())
+
                                 .andExpect(status().isAccepted())
                                 .andExpect(jsonPath("$").doesNotExist());
 
@@ -230,7 +230,7 @@ public class TestUserFollowController {
 
                                                 .contentType(APPLICATION_JSON)
                                                 .content(""))
-                                .andDo(print())
+
                                 .andExpect(status().isAccepted())
                                 .andExpect(jsonPath("$").isArray())
                                 .andExpect(jsonPath("$", hasSize(1)));
@@ -246,7 +246,7 @@ public class TestUserFollowController {
                                                 .param("username", testUser1.getUserName())
                                                 .contentType(APPLICATION_JSON)
                                                 .content(""))
-                                .andDo(print())
+
                                 .andExpect(status().isAccepted())
                                 .andExpect(jsonPath("$").isArray());
 
@@ -260,7 +260,7 @@ public class TestUserFollowController {
                                 testUser2.getUserName()).sessionAttrs(sessionattrUser1)
                                 .contentType(APPLICATION_JSON)
                                 .content(""))
-                                .andDo(print())
+
                                 .andExpect(status().isAccepted())
                                 .andExpect(jsonPath("$").doesNotExist());
                 // check size
@@ -269,7 +269,7 @@ public class TestUserFollowController {
                                                 .param("username", testUser1.getUserName())
                                                 .contentType(APPLICATION_JSON)
                                                 .content(""))
-                                .andDo(print())
+
                                 .andExpect(status().isAccepted())
                                 .andExpect(jsonPath("$").isArray())
                                 .andExpect(jsonPath("$", hasSize(1)));
@@ -281,7 +281,7 @@ public class TestUserFollowController {
                                                 .param("username", testUser1.getUserName())
                                                 .contentType(APPLICATION_JSON)
                                                 .content(""))
-                                .andDo(print())
+
                                 .andExpect(status().isAccepted())
                                 .andExpect(jsonPath("$").isArray())
                                 .andExpect(jsonPath("$", hasSize(0)));
