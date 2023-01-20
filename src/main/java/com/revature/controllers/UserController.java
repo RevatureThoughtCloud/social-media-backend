@@ -2,7 +2,6 @@ package com.revature.controllers;
 
 import com.revature.annotations.Authorized;
 import com.revature.dtos.UserDto;
-import com.revature.dtos.UserMapper;
 import com.revature.models.User;
 import com.revature.services.UserService;
 import org.springframework.http.HttpStatus;
@@ -25,6 +24,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    // Get User by Id
     @Authorized
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable int id, HttpSession session) {
@@ -36,6 +36,20 @@ public class UserController {
             return new ResponseEntity<>(user.get(), HttpStatus.OK);
         else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    // Update User details
+    @Authorized
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDto> updateUserProfile(@PathVariable int id, @RequestBody UserDto updatedUser, HttpSession session) {
+        User currentUser = (User) session.getAttribute("user");
+        if (currentUser.getId() == id) {
+            Optional<UserDto> updated = userService.updateUserProfile(id, updatedUser);
+            if (updated.isPresent()) {
+                return new ResponseEntity<>(updated.get(), HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
     // Get followers
