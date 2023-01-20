@@ -1,27 +1,25 @@
-package com.revature;
+package com.revature.controllers;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import javax.transaction.Transactional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
+import org.springframework.test.web.servlet.ResultMatcher;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.revature.controllers.PostController;
+import com.revature.SocialMediaApplication;
 import com.revature.models.Post;
 import com.revature.models.PostLike;
 import com.revature.models.User;
@@ -33,49 +31,45 @@ import com.revature.services.PostService;
 class TestLikePostController {
 	
 	String likeUrl = "/post/like/";
-	
-	@Autowired
-    private WebApplicationContext context;
 
     @Autowired
     private MockMvc mockMvc;
 
-    @Mock
+    @MockBean
     PostService pServ;
     
-    PostController pCon;
+    PostController pControl;
     
     ObjectMapper om = new ObjectMapper();
     
     User testUser;
+    Post testPost;
     PostLike testPostLike;
     
     @BeforeEach
-    public void setup(WebApplicationContext webApplicationContext) {
-//    	mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
-//    	
-//    	testUser = userRepo.findByUserName("jcanales").orElse(new User());
-//    	
-//    	testPostLike = new PostLike();
-//    	testPostLike.setUser(testUser);
+    public void setup() {
+    	testUser = new User();
+    	testPost = new Post();
+    	
+    	testPostLike = new PostLike();
+    	testPostLike.setPost(testPost);
+    	testPostLike.setUser(testUser);
     }
 	
-	//POST /like
     
-//    @Test
-//    @DisplayName("1. Test Liking Post")
-//	public void testLikePostNotLiked() throws Exception {
-//    	
-//    	Post testPost = postRepo.findById(5).orElse(new Post());
-//    	testPostLike.setPost(testPost);
-//    	
-//    	String postLikeJson = om.writeValueAsString(testPostLike);
-//    	
-//    	mockMvc.perform(post(likeUrl)
-//    			.contentType(APPLICATION_JSON).content(postLikeJson))
-//    			.andDo(print()).andExpect(status().isOk());
-// 
-//    }
+    @Test
+    @DisplayName("Testing postNewLike")
+	public void testNewLike() throws Exception {
+    	when(pServ.insertLike(testPostLike)).thenReturn(testPostLike);
+
+    	String inputJson = "{\"post\":{\"id\":0,\"text\":null,\"imageUrl\":null,\"likeCount\":0,\"comments\":null,"
+    			+ "\"author\":null,\"postType\":null},\"user\":{\"id\":0,\"email\":null,\"firstName\":null,"
+    			+ "\"lastName\":null,\"userName\":null,\"aboutMe\":\"About Me\",\"followersCount\":0,\"followingsCount\":0}}";
+    	String resultJson = om.writeValueAsString(testPostLike);
+    	
+    	mockMvc.perform(post(likeUrl).content(inputJson).contentType(APPLICATION_JSON))
+    					.andExpect(status().isOk()).andExpect(content().json(resultJson));
+    }
 //    
 //    @Test
 //    @DisplayName("1. Test Liking Post -  Post already liked")
