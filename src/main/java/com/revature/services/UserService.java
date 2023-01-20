@@ -13,15 +13,10 @@ import com.revature.models.idclasses.FollowerId;
 import com.revature.repositories.FollowRepository;
 import com.revature.repositories.UserRepository;
 import org.springframework.stereotype.Service;
-
-import java.io.Serializable;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
-
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
 
 @Service
 public class UserService {
@@ -31,14 +26,27 @@ public class UserService {
 
     public UserService(UserRepository userRepository, FollowRepository followRepository) {
         this.userRepository = userRepository;
-
         this.followRepository = followRepository;
-
     }
 
+    // Get User by Id
     public Optional<User> getUserById(int id) {
-
         return userRepository.findById(id);
+    }
+
+    // Update User details
+    public Optional<UserDto> updateUserProfile(int id, UserDto updatedUser) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            User u = user.get();
+            u.setUserName(updatedUser.getUserName());
+            u.setFirstName(updatedUser.getFirstName());
+            u.setLastName(updatedUser.getLastName());
+            u.setAboutMe(updatedUser.getAboutMe());
+            userRepository.save(u);
+            return Optional.of(UserMapper.toDto(u));
+        }
+        return Optional.empty();
     }
 
     public Optional<UserDto> getUserById(int user2Id, int currentUserId) {
@@ -52,7 +60,6 @@ public class UserService {
         } else {
             throw new UserNotFoundException();
         }
-      
 
         return Optional.of(u2);
     }
