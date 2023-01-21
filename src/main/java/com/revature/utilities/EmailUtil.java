@@ -8,7 +8,7 @@ import java.util.Properties;
 
 public class EmailUtil {
     @Bean
-    public JavaMailSender getJavaMailSender() {
+    public static JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost("smtp-mail.outlook.com");
         mailSender.setPort(587);

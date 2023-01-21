@@ -8,5 +8,5 @@ import java.util.Optional;
 public interface PasswordTokenRepository extends JpaRepository<PasswordToken, String> {
     Optional<PasswordToken> findByUserEmail(String email);
 
-    Optional<PasswordToken> createPasswordToken(String passwordToken, String email, boolean processed);
+    Optional<PasswordToken> findByPasswordToken(String passwordToken);
 }

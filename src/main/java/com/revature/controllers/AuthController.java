@@ -2,15 +2,22 @@ package com.revature.controllers;
 
 import com.revature.dtos.LoginRequest;
 import com.revature.dtos.RegisterRequest;
+import com.revature.models.PasswordToken;
 import com.revature.models.User;
 import com.revature.services.AuthService;
 import com.revature.services.PasswordTokenService;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.mail.javamail.JavaMailSender;
+import com.revature.utilities.EmailUtil;
 
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
+import java.security.MessageDigest;
 import java.util.Optional;
 
 @RestController
@@ -61,11 +68,38 @@ public class AuthController {
 
     @PostMapping("/reset-password")
     public ResponseEntity<Boolean> sendResetEmail(@RequestBody String userEmail) {
+        Optional<User> linkedUser = authService.getUserByEmail(userEmail);
+        if (linkedUser.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
 
-        return ResponseEntity.ok(passwTokenService.createPasswordToken(userEmail).isPresent());
+        Optional<PasswordToken> tokenOptional = passwTokenService.createPasswordToken(linkedUser.get());
+        if (tokenOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+        PasswordToken passwordToken = tokenOptional.get();
+
+        JavaMailSender emailSender = EmailUtil.getJavaMailSender();
+        MimeMessage mimeMessage = emailSender.createMimeMessage();
+        String body = "This email is in response to a ThoughtCloud Reset Password Request \n" +
+                "If you recognize this request and want to go ahead with changing your password follow this link: \n" +
+                "<a href=\"http://p3-dist.s3-website-us-east-1.amazonaws.com/reset-password?token=${passwordToken.getPasswordToken()}\">Reset Password Link</a> ";
+        try {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, "UTF-8");
+            messageHelper.setFrom("elian793@revature.net");
+            messageHelper.setTo(passwordToken.getUser().getEmail());
+            messageHelper.setSubject("ThoughtCloud Reset Password Request");
+            messageHelper.setText(body, true);
+            emailSender.send(mimeMessage);
+        } catch (Exception e) {
+            System.out.printf("Email could not be sent to user '%s': %s ", passwordToken.getUser().getEmail(), e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
+        return ResponseEntity.ok(true);
     }
 
-    @PostMapping(value = "/reset-password", params = {"validate"})
+    @PostMapping(value = "/reset-password", params = {"token"})
     public ResponseEntity<Boolean> resetPassword(@RequestBody String userEmail) {
 
 

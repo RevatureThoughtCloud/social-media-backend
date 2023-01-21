@@ -1,8 +1,10 @@
 package com.revature.services;
 
 import com.revature.models.PasswordToken;
+import com.revature.models.User;
 import com.revature.repositories.PasswordTokenRepository;
 import com.revature.repositories.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,14 +20,14 @@ public class PasswordTokenService {
     @Autowired
     private PasswordTokenRepository passwTokenRepo;
 
-    public Optional<PasswordToken> createPasswordToken(String email) {
-        String passwordToken;
+    public Optional<PasswordToken> createPasswordToken(User linkedUser) {
+        String passwordTokenString;
         boolean processed = false;
-
+        PasswordToken newToken;
 
         // setup and produce a digest based on the current time
-        MessageDigest instance;
         try {
+            MessageDigest instance;
             instance = MessageDigest.getInstance("MD5");
             byte[] messageDigest = instance.digest(String.valueOf(System.nanoTime()).getBytes());
             StringBuilder hexString = new StringBuilder();
@@ -40,15 +42,15 @@ public class PasswordTokenService {
                 }
                 hexString.append(hex);
             }
-            passwordToken = hexString.toString();
+            passwordTokenString = hexString.toString();
+            newToken = new PasswordToken(passwordTokenString, linkedUser, processed);
 
-
-            return passwTokenRepo.createPasswordToken(passwordToken, email, processed);
+            return Optional.of(passwTokenRepo.save(newToken));
         } catch(NoSuchAlgorithmException e) {
             System.out.println(e.getMessage());
         }
-            return null;
-        }
+            return Optional.empty();
+    }
 
         public Boolean process() {
 

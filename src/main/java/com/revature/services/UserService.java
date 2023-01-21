@@ -41,6 +41,11 @@ public class UserService {
         return userRepository.findById(id);
     }
 
+    public Optional<User> getUserByEmail(String email) {
+
+        return userRepository.findByEmail(email);
+    }
+
     public Optional<UserDto> getUserById(int user2Id, int currentUserId) {
 
         Optional<User> user2 = userRepository.findById(user2Id);
