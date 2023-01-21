@@ -68,6 +68,12 @@ public class PostController {
         return ResponseEntity.ok(this.postService.likeExists(new PostLikeKey(postId, userId)));
     }
 
+    @DeleteMapping("/{postId}")
+    public ResponseEntity deletePostById(@PathVariable int postId) {
+        postService.deleteById(postId);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
     // Change response to post to update like count?
     @PostMapping("/like")
     public ResponseEntity<PostLike> postNewLike(@RequestBody PostLike like) {

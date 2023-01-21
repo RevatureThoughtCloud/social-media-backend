@@ -2,6 +2,7 @@ package com.revature.services;
 
 import com.revature.models.Notification;
 import com.revature.models.NotificationStatus;
+import com.revature.models.NotificationType;
 import com.revature.repositories.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class NotificationService {
 
 	public Notification createNotification(Notification notification) {
 		String message = "";
-		switch(notification.getType()){
+		switch(notification.getType()) {
 			case COMMENT:
 				message = " has commented on your post!";
 				break;
@@ -39,6 +40,7 @@ public class NotificationService {
 
 		return nRepo.save(notification);
 	}
+
 	@Transactional
 	public boolean markNotificationRead(NotificationStatus status, long notificationId) {
 		return nRepo.updateStatusById(status, notificationId) > 0;
@@ -48,12 +50,21 @@ public class NotificationService {
 		return nRepo.findAllByRecipientUserName(username);
 	}
 
-	public Optional<Notification> findNotificationById(long id){
+	public Optional<Notification> findNotificationById(long id) {
 		return nRepo.findById(id);
 	}
 
-	public void deleteNotification(long id){
+	public void deleteNotification(long id) {
 		nRepo.deleteById(id);
+	}
+
+	public Notification findNotification(int senderId, int recipientId, int postId, NotificationType type) {
+		return nRepo.findBySenderIdAndRecipientIdAndPostIdAndType(senderId, recipientId, postId, type);
+	}
+
+	public Notification findNotification(int senderId, int recipientId, NotificationType type) {
+
+		return nRepo.findBySenderIdAndRecipientIdAndType(senderId, recipientId, type);
 	}
 
 
