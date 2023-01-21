@@ -33,7 +33,7 @@ public class Post {
 	private String text;
 	private String imageUrl;
 	private int likeCount;
-	@OneToMany( cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Post> comments;
 
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
