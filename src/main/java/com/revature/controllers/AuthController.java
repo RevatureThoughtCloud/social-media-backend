@@ -13,7 +13,8 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:3000" }, allowCredentials = "true")
+@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:3000",
+        "http://ec2-100-25-130-16.compute-1.amazonaws.com:8080" }, allowCredentials = "true", allowedHeaders = "*")
 public class AuthController {
 
     private final AuthService authService;

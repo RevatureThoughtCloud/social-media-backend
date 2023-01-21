@@ -15,7 +15,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/user")
 @CrossOrigin(origins = { "http://localhost:4200", "http://localhost:3000",
-        "http://localhost:8080" }, allowCredentials = "true", allowedHeaders = "*")
+        "http://ec2-100-25-130-16.compute-1.amazonaws.com:8080" }, allowCredentials = "true", allowedHeaders = "*")
 public class UserController {
 
     private UserService userService;
@@ -41,7 +41,8 @@ public class UserController {
     // Update User details
     @Authorized
     @PutMapping("/{id}")
-    public ResponseEntity<UserDto> updateUserProfile(@PathVariable int id, @RequestBody UserDto updatedUser, HttpSession session) {
+    public ResponseEntity<UserDto> updateUserProfile(@PathVariable int id, @RequestBody UserDto updatedUser,
+            HttpSession session) {
         User currentUser = (User) session.getAttribute("user");
         if (currentUser.getId() == id) {
             Optional<UserDto> updated = userService.updateUserProfile(id, updatedUser);
@@ -50,6 +51,14 @@ public class UserController {
             }
         }
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
+
+    // Get User by Id
+    @Authorized
+    @GetMapping("/search/{id}")
+    public ResponseEntity<List<UserDto>> getUserByText(@PathVariable String id, HttpSession session) {
+
+        return new ResponseEntity<>(userService.getUserByText(id), HttpStatus.OK);
     }
 
     // Get followers

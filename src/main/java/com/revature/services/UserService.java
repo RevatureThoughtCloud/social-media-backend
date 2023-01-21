@@ -139,4 +139,13 @@ public class UserService {
         return f.stream().map((user1) -> UserMapper.toDto(user1.getFollowed())).collect(Collectors.toList());
     }
 
+    @Authorized
+    // Gets who userId is following
+    public List<UserDto> getUserByText(String searchText) {
+        List<User> f = userRepository.findByFirstNameContainingIgnoreCaseOrUserNameContainingIgnoreCase(searchText,
+                searchText);
+
+        return f.stream().map((user1) -> UserMapper.toDto(user1)).collect(Collectors.toList());
+    }
+
 }
