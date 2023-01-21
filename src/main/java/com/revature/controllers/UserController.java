@@ -15,8 +15,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/user")
 @CrossOrigin(origins = { "http://localhost:4200", "http://localhost:3000",
-        "http://p3-dist.s3-website-us-east-1.amazonaws.com/" }, allowCredentials = "true", allowedHeaders = "*", methods = {
-                RequestMethod.GET, RequestMethod.POST, RequestMethod.OPTIONS, RequestMethod.DELETE, RequestMethod.PUT })
+        "http://p3-dist.s3-website-us-east-1.amazonaws.com/" }, allowCredentials = "true", allowedHeaders = "*")
 public class UserController {
 
     private UserService userService;
