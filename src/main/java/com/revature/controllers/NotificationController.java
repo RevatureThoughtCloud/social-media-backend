@@ -16,7 +16,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/notifications")
-@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:3000"}, allowCredentials = "true")
+@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:3000",
+		"http://ec2-100-25-130-16.compute-1.amazonaws.com:8080" }, allowCredentials = "true", allowedHeaders = "*")
 public class NotificationController {
 	@Autowired
 	private NotificationService nServe;
@@ -28,7 +29,7 @@ public class NotificationController {
 		try {
 			User currentUser = (User) session.getAttribute("user");
 			notifications = nServe.getNotificationsByUser(currentUser.getUserName());
-		} catch(Exception e) {
+		} catch (Exception e) {
 			return new ResponseEntity<>(notifications, HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<>(notifications, HttpStatus.ACCEPTED);
@@ -41,7 +42,7 @@ public class NotificationController {
 		try {
 			User currentUser = (User) session.getAttribute("user");
 			count = nServe.countByUsername(currentUser.getUserName());
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(count, HttpStatus.NOT_FOUND);
 		}
@@ -59,6 +60,5 @@ public class NotificationController {
 	public void delete(@PathVariable int id) {
 		nServe.deleteNotification(id);
 	}
-
 
 }

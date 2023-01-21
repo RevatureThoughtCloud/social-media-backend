@@ -32,7 +32,6 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     defer-datasource-initialization: true
     show-sql: true
-    enable_lazy_load_no_trans: true
 
   datasource:
     url: jdbc:h2:mem:memdb
@@ -41,4 +40,3 @@ spring:
     password: password
   h2:
     console.enabled: true
-

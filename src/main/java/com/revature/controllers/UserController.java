@@ -14,7 +14,8 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
-@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:3000", "http://localhost:8080" }, allowCredentials = "true", allowedHeaders = "*")
+@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:3000",
+        "http://ec2-100-25-130-16.compute-1.amazonaws.com:8080" }, allowCredentials = "true", allowedHeaders = "*")
 public class UserController {
 
     private UserService userService;
@@ -23,13 +24,41 @@ public class UserController {
         this.userService = userService;
     }
 
+    // Get User by Id
+    @Authorized
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable int id) {
-        Optional<User> user = userService.getUserById(id);
+    public ResponseEntity<UserDto> getUserById(@PathVariable int id, HttpSession session) {
+
+        User currentUser = (User) session.getAttribute("user");
+        Optional<UserDto> user = userService.getUserById(id, currentUser.getId());
+
         if (user.isPresent())
             return new ResponseEntity<>(user.get(), HttpStatus.OK);
         else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    // Update User details
+    @Authorized
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDto> updateUserProfile(@PathVariable int id, @RequestBody UserDto updatedUser,
+            HttpSession session) {
+        User currentUser = (User) session.getAttribute("user");
+        if (currentUser.getId() == id) {
+            Optional<UserDto> updated = userService.updateUserProfile(id, updatedUser);
+            if (updated.isPresent()) {
+                return new ResponseEntity<>(updated.get(), HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
+
+    // Get User by Id
+    @Authorized
+    @GetMapping("/search/{id}")
+    public ResponseEntity<List<UserDto>> getUserByText(@PathVariable String id, HttpSession session) {
+
+        return new ResponseEntity<>(userService.getUserByText(id), HttpStatus.OK);
     }
 
     // Get followers

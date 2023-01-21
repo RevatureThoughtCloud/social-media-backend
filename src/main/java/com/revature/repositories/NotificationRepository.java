@@ -2,6 +2,7 @@ package com.revature.repositories;
 
 import com.revature.models.Notification;
 import com.revature.models.NotificationStatus;
+import com.revature.models.NotificationType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,6 +16,9 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 	long countByRecipientUserNameAndStatus(String username, NotificationStatus status);
 
 	List<Notification> findAllByRecipientUserName(String username);
+
+	Notification findBySenderIdAndRecipientIdAndPostIdAndType(int senderId, int recipientId, int postId, NotificationType type);
+	Notification findBySenderIdAndRecipientIdAndType(int senderId, int recipientId, NotificationType type);
 
 	@Modifying
 	@Transactional

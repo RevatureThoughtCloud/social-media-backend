@@ -9,6 +9,8 @@ import javax.persistence.MapsId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Data
@@ -22,6 +24,7 @@ public class PostLike {
 	@ManyToOne
 	@MapsId("postId")
 	@JoinColumn(name = "post_id")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Post post;
 
 	@ManyToOne
