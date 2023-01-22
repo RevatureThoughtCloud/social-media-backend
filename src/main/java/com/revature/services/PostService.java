@@ -19,7 +19,7 @@ public class PostService {
 
 	private PostRepository postRepository;
 	private PostLikeRepository postLikeRepository;
-	
+
 	public PostService(PostRepository postRepository, PostLikeRepository postLikeRepository) {
 		this.postRepository = postRepository;
 		this.postLikeRepository = postLikeRepository;
@@ -37,20 +37,21 @@ public class PostService {
 		return postRepository.findAllByPostType(PostType.Top);
 	}
 
-   public List<Post> getAllByAuthorId(int id) {
-		return postRepository.findAllByAuthorId(id);}
-	
+	public List<Post> getAllByAuthorId(int id) {
+		return postRepository.findAllByAuthorId(id);
+	}
+
 	public Optional<Post> getById(int postId) {
 		return postRepository.findById(postId);
 	}
-	
+
 	public PostLike insertLike(PostLike like) {
 		Post likedPost = like.getPost();
 		likedPost.setLikeCount(likedPost.getLikeCount() + 1);
 		postRepository.save(likedPost);
 		return postLikeRepository.save(like);
 	}
-	
+
 	public void deleteLike(PostLike like) {
 		Post likedPost = like.getPost();
 		likedPost.setLikeCount(likedPost.getLikeCount() - 1);
@@ -58,11 +59,11 @@ public class PostService {
 		like.setId();
 		postLikeRepository.delete(like);
 	}
-	
+
 	public boolean likeExists(PostLikeKey key) {
 		Optional<PostLike> exists = postLikeRepository.findById(key);
 		return exists.isPresent();
-		
+
 	}
 
 	public void deleteById(int postId) {
