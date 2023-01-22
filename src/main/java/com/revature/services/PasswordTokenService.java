@@ -52,10 +52,20 @@ public class PasswordTokenService {
             return Optional.empty();
     }
 
-        public Boolean process() {
+    public Boolean process(PasswordToken currentToken, String newPassword) {
+        currentToken.setProcessed(true);
+        passwTokenRepo.save(currentToken);
 
-            return false;
-        }
+        User updatedUser = currentToken.getUser();
+        updatedUser.setPassword(newPassword);
+        updatedUser = userRepo.save(updatedUser);
+
+        return newPassword.equals(updatedUser.getPassword());
+    }
+
+    public Optional<PasswordToken> findPassToken(String token) {
+        return passwTokenRepo.findByPasswordToken(token);
+    }
 
 
 

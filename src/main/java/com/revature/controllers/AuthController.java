@@ -3,6 +3,7 @@ package com.revature.controllers;
 import com.revature.dtos.LoginRequest;
 import com.revature.dtos.RegisterRequest;
 import com.revature.dtos.ResetEmailRequest;
+import com.revature.dtos.ResetPasswRequest;
 import com.revature.models.PasswordToken;
 import com.revature.models.User;
 import com.revature.services.AuthService;
@@ -101,12 +102,15 @@ public class AuthController {
     }
 
     @PostMapping(value = "/reset-password", params = {"token"})
-    public ResponseEntity<Boolean> resetPassword(@RequestBody String userEmail) {
+    public ResponseEntity<Boolean> resetPassword(@RequestBody ResetPasswRequest newPassword, String token) {
+        Optional<PasswordToken> passwordTokenOptional = passwTokenService.findPassToken(token);
+        if (passwordTokenOptional.isEmpty() || passwordTokenOptional.get().isProcessed() || newPassword.getNewPassword() == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+        PasswordToken passwordToken = passwordTokenOptional.get();
 
-
-
-
-        return ResponseEntity.ok(true);
+        boolean result = passwTokenService.process(passwordToken, newPassword.getNewPassword());
+        return ResponseEntity.ok(result);
     }
 
 }
