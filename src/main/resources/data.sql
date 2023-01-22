@@ -17,7 +17,7 @@ INSERT INTO users ( email, password, first_name, last_name, user_name) VALUES (
 
 INSERT INTO users ( email, password, first_name, last_name, user_name) VALUES (
 
-    'elian@rev.com',
+    'elifelxv@gmail.com',
     'password',
     'Elian',
     'Felix',

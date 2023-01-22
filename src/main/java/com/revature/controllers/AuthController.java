@@ -2,6 +2,7 @@ package com.revature.controllers;
 
 import com.revature.dtos.LoginRequest;
 import com.revature.dtos.RegisterRequest;
+import com.revature.dtos.ResetEmailRequest;
 import com.revature.models.PasswordToken;
 import com.revature.models.User;
 import com.revature.services.AuthService;
@@ -67,8 +68,8 @@ public class AuthController {
     }
 
     @PostMapping("/reset-password")
-    public ResponseEntity<Boolean> sendResetEmail(@RequestBody String userEmail) {
-        Optional<User> linkedUser = authService.getUserByEmail(userEmail);
+    public ResponseEntity<Boolean> sendResetEmail(@RequestBody ResetEmailRequest reqBody) {
+        Optional<User> linkedUser = authService.getUserByEmail(reqBody.getUserEmail());
         if (linkedUser.isEmpty()) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -81,12 +82,12 @@ public class AuthController {
 
         JavaMailSender emailSender = EmailUtil.getJavaMailSender();
         MimeMessage mimeMessage = emailSender.createMimeMessage();
-        String body = "This email is in response to a ThoughtCloud Reset Password Request \n" +
-                "If you recognize this request and want to go ahead with changing your password follow this link: \n" +
-                "<a href=\"http://p3-dist.s3-website-us-east-1.amazonaws.com/reset-password?token=${passwordToken.getPasswordToken()}\">Reset Password Link</a> ";
+        String body = "<p>This email is in response to a ThoughtCloud Reset Password Request. </p>\n" +
+                "<p>If you recognize this request and want to go ahead with changing your password follow this link: </p>\n" +
+                String.format("<a href=\"http://p3-dist.s3-website-us-east-1.amazonaws.com/reset-password?token=%s\">Reset Password Link</a> ", passwordToken.getPasswordToken());
         try {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, "UTF-8");
-            messageHelper.setFrom("elian793@revature.net");
+            messageHelper.setFrom("thoughtcloud@mail.com");
             messageHelper.setTo(passwordToken.getUser().getEmail());
             messageHelper.setSubject("ThoughtCloud Reset Password Request");
             messageHelper.setText(body, true);
