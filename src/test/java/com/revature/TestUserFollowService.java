@@ -98,7 +98,6 @@ public class TestUserFollowService {
         this.mockMvc.perform(post(followUser + testUser2.getUserName()).sessionAttrs(sessionattrUser1)
                 .contentType(APPLICATION_JSON)
                 .content(""))
-                .andDo(print())
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$").doesNotExist());
 
