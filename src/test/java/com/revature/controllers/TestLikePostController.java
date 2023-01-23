@@ -12,6 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.annotation.DirtiesContext;
@@ -26,9 +27,7 @@ import com.revature.models.PostLikeKey;
 import com.revature.models.User;
 import com.revature.services.PostService;
 
-@SpringBootTest(classes = SocialMediaApplication.class)
-@AutoConfigureMockMvc
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@WebMvcTest(PostController.class)
 class TestLikePostController {
 	
 	private String likeUrl = "/post/like/";
