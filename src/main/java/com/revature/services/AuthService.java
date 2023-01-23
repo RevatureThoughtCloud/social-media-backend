@@ -18,6 +18,10 @@ public class AuthService {
     public Optional<User> findByCredentials(String email, String password) {
         return userService.findByCredentials(email, password);
     }
+    public Optional<User> getUserByEmail(String email) {
+        return userService.getUserByEmail(email);
+    }
+
 
     public User register(User user) {
         System.out.println("creating user: "+user);
