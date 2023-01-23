@@ -8,6 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
@@ -88,6 +91,18 @@ class NotificationRepositoryTest {
 
 		assertEquals(notes, results);
 
+	}
+
+	@Test
+	void findAllByRecipientUserNameStatusLimit(){
+		List<Notification> notes = new ArrayList<>();
+		notes.add(note);
+		Page<Notification> page = new PageImpl<>(notes);
+		Page<Notification> result = repo.findAllByRecipientUserNameAndStatus("bob", NotificationStatus.UNREAD,
+				PageRequest.of(0, 5));
+
+		assertEquals(page.getContent(), result.getContent());
+		assertEquals(page.getTotalElements(), result.getTotalElements());
 	}
 
 	@Test
