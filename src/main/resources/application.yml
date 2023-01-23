@@ -2,7 +2,7 @@
 spring:
   profiles:
     active:
-      - dev
+      - prod
 
 ---
 server:
@@ -54,7 +54,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
       format-sql: false
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     defer-datasource-initialization: true
