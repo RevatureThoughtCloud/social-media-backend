@@ -4,7 +4,10 @@ import com.revature.models.Notification;
 import com.revature.models.NotificationStatus;
 import com.revature.models.NotificationType;
 import com.revature.repositories.NotificationRepository;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -48,6 +51,10 @@ public class NotificationService {
 
 	public List<Notification> getNotificationsByUser(String username) {
 		return nRepo.findAllByRecipientUserName(username);
+	}
+
+	public Page<Notification> getNotificationsByUserLimit5(String username) {
+		return nRepo.findAllByRecipientUserNameAndStatus(username, NotificationStatus.UNREAD, PageRequest.of(0, 5));
 	}
 
 	public Optional<Notification> findNotificationById(long id) {
