@@ -31,22 +31,20 @@ import com.revature.services.PostService;
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 class TestLikePostController {
 	
-	String likeUrl = "/post/like/";
+	private String likeUrl = "/post/like/";
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    PostService pServ;
+    private PostService pServ;
     
-    PostController pControl;
+    private ObjectMapper om = new ObjectMapper();
     
-    ObjectMapper om = new ObjectMapper();
-    
-    User testUser;
-    Post testPost;
-    PostLike testPostLike;
-    String inputJson = "{\"post\":{\"id\":0,\"text\":null,\"imageUrl\":null,\"likeCount\":0,\"comments\":null,"
+    private User testUser;
+    private Post testPost;
+    private PostLike testPostLike;
+    private String inputJson = "{\"post\":{\"id\":0,\"text\":null,\"imageUrl\":null,\"likeCount\":0,\"comments\":null,"
 			+ "\"author\":null,\"postType\":null},\"user\":{\"id\":0,\"email\":null,\"firstName\":null,"
 			+ "\"lastName\":null,\"userName\":null,\"aboutMe\":\"About Me\",\"followersCount\":0,\"followingsCount\":0}}";
     
