@@ -1,11 +1,9 @@
 package com.revature.controllers;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
-import com.revature.models.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.annotations.Authorized;
@@ -22,8 +21,6 @@ import com.revature.models.Post;
 import com.revature.models.PostLike;
 import com.revature.models.PostLikeKey;
 import com.revature.services.PostService;
-
-import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/post")
@@ -68,17 +65,16 @@ public class PostController {
         return ResponseEntity.ok(this.postService.likeExists(new PostLikeKey(postId, userId)));
     }
 
-    // Change response to post to update like count?
     @PostMapping("/like")
     public ResponseEntity<PostLike> postNewLike(@RequestBody PostLike like) {
         return ResponseEntity.ok(this.postService.insertLike(like));
     }
 
-    // Change response to post to update like count?
     @DeleteMapping("/like")
-    public ResponseEntity<?> deleteLike(@RequestBody PostLike like) {
+    @ResponseStatus(code=HttpStatus.OK)
+    public boolean deleteLike(@RequestBody PostLike like) {
         this.postService.deleteLike(like);
-        return new ResponseEntity<>(true, HttpStatus.OK);
+        return true;
     }
 
 }
