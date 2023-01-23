@@ -2,11 +2,15 @@ package com.revature.services;
 
 import com.revature.models.*;
 import com.revature.repositories.NotificationRepository;
+import org.aspectj.weaver.ast.Not;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,6 +87,24 @@ class NotificationServiceTest {
 		assertEquals(notes, result);
 
 		verify(repo, times(1)).findAllByRecipientUserName("bob");
+	}
+
+	@Test
+	void getNotificationsByUserWithLimit(){
+		Notification note = new Notification();
+		note.setType(NotificationType.LIKE);
+		List<Notification> notes = new ArrayList<>();
+		for(int i = 0; i < 10; i++){
+		notes.add(note);
+		}
+		Page<Notification> page = new PageImpl<>(notes.subList(0, 4));
+		when(repo.findAllByRecipientUserNameAndStatus("bob", NotificationStatus.UNREAD ,PageRequest.of(0, 5))).thenReturn(page);
+
+		Page<Notification> result = service.getNotificationsByUserLimit5("bob");
+
+		assertEquals(notes.subList(0, 4), result.getContent());
+
+		verify(repo, times(1)).findAllByRecipientUserNameAndStatus("bob", NotificationStatus.UNREAD ,PageRequest.of(0, 5));
 	}
 
 	@Test

@@ -55,6 +55,7 @@ public class NotificationService {
 
 	public Page<Notification> getNotificationsByUserLimit5(String username) {
 		return nRepo.findAllByRecipientUserNameAndStatus(username, NotificationStatus.UNREAD, PageRequest.of(0, 5));
+		
 	}
 
 	public Optional<Notification> findNotificationById(long id) {
