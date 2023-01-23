@@ -36,6 +36,19 @@ public class NotificationController {
 	}
 
 	@Authorized
+	@GetMapping("/nav")
+	public ResponseEntity<List<Notification>> getNotificationsWithLimit(HttpSession session) {
+		List<Notification> notifications = new ArrayList<>();
+		try {
+			User currentUser = (User) session.getAttribute("user");
+			notifications = nServe.getNotificationsByUserLimit5(currentUser.getUserName()).getContent();
+		} catch(Exception e) {
+			return new ResponseEntity<>(notifications, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(notifications, HttpStatus.ACCEPTED);
+	}
+
+	@Authorized
 	@GetMapping("/count")
 	public ResponseEntity<Long> count(HttpSession session) {
 		long count = 0;
