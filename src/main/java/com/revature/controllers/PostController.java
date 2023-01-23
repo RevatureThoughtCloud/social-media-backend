@@ -3,6 +3,7 @@ package com.revature.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.annotations.Authorized;
@@ -24,7 +26,8 @@ import com.revature.services.PostService;
 
 @RestController
 @RequestMapping("/post")
-@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:3000" }, allowCredentials = "true")
+@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:3000",
+        "http://p3-dist.s3-website-us-east-1.amazonaws.com/" }, allowCredentials = "true", allowedHeaders = "*")
 public class PostController {
 
     private final PostService postService;
@@ -65,6 +68,12 @@ public class PostController {
         return ResponseEntity.ok(this.postService.likeExists(new PostLikeKey(postId, userId)));
     }
 
+    @DeleteMapping("/{postId}")
+    public ResponseEntity deletePostById(@PathVariable int postId) {
+        postService.deleteById(postId);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+    
     @PostMapping("/like")
     public ResponseEntity<PostLike> postNewLike(@RequestBody PostLike like) {
         return ResponseEntity.ok(this.postService.insertLike(like));

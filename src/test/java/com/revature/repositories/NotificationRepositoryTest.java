@@ -1,9 +1,6 @@
 package com.revature.repositories;
 
-import com.revature.models.Notification;
-import com.revature.models.NotificationStatus;
-import com.revature.models.NotificationType;
-import com.revature.models.User;
+import com.revature.models.*;
 import org.aspectj.weaver.ast.Not;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +17,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-
 @DataJpaTest
 @ActiveProfiles("test")
 class NotificationRepositoryTest {
@@ -34,12 +30,21 @@ class NotificationRepositoryTest {
 	private Notification note;
 
 	@BeforeEach
-	void beforeEach(){
+	void beforeEach() {
 
 		User recipient = new User();
 		recipient.setUserName("bob");
 
 		recipient = entityManager.merge(recipient);
+
+		User sender = new User();
+		sender.setUserName("bobert");
+
+		sender = entityManager.merge(sender);
+
+		Post post = new Post();
+
+		post = entityManager.merge(post);
 
 		note = new Notification();
 
@@ -47,8 +52,8 @@ class NotificationRepositoryTest {
 		note.setStatus(NotificationStatus.UNREAD);
 
 		note.setRecipient(recipient);
-
-
+		note.setSender(sender);
+		note.setPost(post);
 
 
 		entityManager.persist(note);
@@ -57,7 +62,7 @@ class NotificationRepositoryTest {
 	}
 
 	@AfterEach
-	void clearData(){
+	void clearData() {
 		entityManager.clear();
 	}
 
@@ -65,12 +70,9 @@ class NotificationRepositoryTest {
 	void countByRecipientUserNameAndStatus() {
 
 
-
 		long result = repo.countByRecipientUserNameAndStatus("bob", NotificationStatus.UNREAD);
 
 		assertEquals(1L, result);
-
-
 
 
 	}
@@ -102,4 +104,29 @@ class NotificationRepositoryTest {
 
 
 	}
+
+	@Test
+	void findBySenderIdAndRecipientIdAndPostIdAndType() {
+
+		Notification result = repo.findBySenderIdAndRecipientIdAndPostIdAndType(note.getSender()
+				.getId(), note.getRecipient()
+				.getId(), note.getPost()
+				.getId(), note.getType());
+
+		assertEquals(note, result);
+
+	}
+
+
+	@Test
+	void findBySenderIdAndRecipientIdAndType() {
+		Notification result = repo.findBySenderIdAndRecipientIdAndType(note.getSender()
+				.getId(), note.getRecipient()
+				.getId(), note.getType());
+
+		assertEquals(note, result);
+
+	}
+
+
 }

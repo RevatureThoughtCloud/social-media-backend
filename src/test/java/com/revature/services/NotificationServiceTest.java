@@ -1,8 +1,6 @@
 package com.revature.services;
 
-import com.revature.models.Notification;
-import com.revature.models.NotificationStatus;
-import com.revature.models.NotificationType;
+import com.revature.models.*;
 import com.revature.repositories.NotificationRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -108,4 +106,37 @@ class NotificationServiceTest {
 		service.deleteNotification(1L);
 		verify(repo, times(1)).deleteById(1L);
 	}
+
+	@Test
+	void testFindLikeNotification(){
+		User recipient = new User();
+		recipient.setId(1);
+		User sender = new User();
+		sender.setId(1);
+		Post post = new Post();
+		post.setId(1);
+
+		Notification note = new Notification(1L, recipient, sender, post, NotificationType.LIKE, null, null);
+		when(repo.findBySenderIdAndRecipientIdAndPostIdAndType(1, 1, 1, NotificationType.LIKE)).thenReturn(note);
+		Notification result = service.findNotification(1, 1, 1, NotificationType.LIKE);
+		assertEquals(note, result);
+		verify(repo).findBySenderIdAndRecipientIdAndPostIdAndType(1, 1, 1, NotificationType.LIKE);
+	}
+	@Test
+	void testFindFollowNotification(){
+		User recipient = new User();
+		recipient.setId(1);
+		User sender = new User();
+		sender.setId(1);
+		Post post = new Post();
+		post.setId(1);
+
+		Notification note = new Notification(1L, recipient, sender, post, NotificationType.FOLLOW, null, null);
+
+		when(repo.findBySenderIdAndRecipientIdAndType(1, 1,  NotificationType.FOLLOW)).thenReturn(note);
+		Notification result = service.findNotification(1, 1,  NotificationType.FOLLOW);
+		assertEquals(note, result);
+		verify(repo).findBySenderIdAndRecipientIdAndType(1, 1,  NotificationType.FOLLOW);
+	}
+
 }
