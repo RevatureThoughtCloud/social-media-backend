@@ -15,6 +15,7 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -74,6 +75,34 @@ class NotificationControllerTest {
 								+ "\"userName\":\"bob\",\"followingsCount\":0,\"followersCount\":0},\"sender\":null,"
 								+ "\"post\":null,\"type\":\"LIKE\",\"status\":\"UNREAD\",\"message\":null}]"));
 
+	}
+
+	void testGetWithLimit() throws Exception {
+		List<Notification> notes = new ArrayList<>();
+		for(int i = 0; i < 10; i++){
+			notes.add(note);
+		}
+		when(service.getNotificationsByUser("bob")).thenReturn(notes);
+
+
+		mockMvc.perform(get("/notifications").session(session))
+				.andExpect(status().isAccepted())
+				.andExpect(content().json(
+						"[{\"id\":null,\"recipient\":{\"id\":0,\"email\":null,\"firstName\":null,\"lastName\":null,"
+								+ "\"userName\":\"bob\",\"followingsCount\":0,\"followersCount\":0},\"sender\":null,"
+								+ "\"post\":null,\"type\":\"LIKE\",\"status\":\"UNREAD\",\"message\":null}," +
+								"{\"id\":null,\"recipient\":{\"id\":0,\"email\":null,\"firstName\":null,\"lastName\":null,"
+								+ "\"userName\":\"bob\",\"followingsCount\":0,\"followersCount\":0},\"sender\":null,"
+								+ "\"post\":null,\"type\":\"LIKE\",\"status\":\"UNREAD\",\"message\":null}," +
+								"{\"id\":null,\"recipient\":{\"id\":0,\"email\":null,\"firstName\":null,\"lastName\":null,"
+								+ "\"userName\":\"bob\",\"followingsCount\":0,\"followersCount\":0},\"sender\":null,"
+								+ "\"post\":null,\"type\":\"LIKE\",\"status\":\"UNREAD\",\"message\":null}," +
+								"{\"id\":null,\"recipient\":{\"id\":0,\"email\":null,\"firstName\":null,\"lastName\":null,"
+								+ "\"userName\":\"bob\",\"followingsCount\":0,\"followersCount\":0},\"sender\":null,"
+								+ "\"post\":null,\"type\":\"LIKE\",\"status\":\"UNREAD\",\"message\":null}," +
+								"{\"id\":null,\"recipient\":{\"id\":0,\"email\":null,\"firstName\":null,\"lastName\":null,"
+								+ "\"userName\":\"bob\",\"followingsCount\":0,\"followersCount\":0},\"sender\":null,"
+								+ "\"post\":null,\"type\":\"LIKE\",\"status\":\"UNREAD\",\"message\":null}]"));
 	}
 
 	@Test

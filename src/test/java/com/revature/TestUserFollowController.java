@@ -32,7 +32,7 @@ import static org.hamcrest.Matchers.*;
 @SpringBootTest(classes = SocialMediaApplication.class)
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@Sql(scripts = "resources/data.sql")
+
 public class TestUserFollowController {
 
         String followUser = "/user/follow/";
