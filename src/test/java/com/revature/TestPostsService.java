@@ -3,6 +3,7 @@ package com.revature;
 import com.revature.models.Notification;
 import com.revature.models.Post;
 import com.revature.models.PostLike;
+import com.revature.models.PostLikeKey;
 import com.revature.models.PostType;
 import com.revature.models.User;
 import com.revature.repositories.FollowRepository;
@@ -32,10 +33,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -142,7 +145,7 @@ public class TestPostsService {
         }
 
         @Test
-        void getPostByIdUserNotExists() {
+        void getPostByAuthorIdUserNotExists() {
 
                 User _user = new User("test@gmail", "password", "test", "test", "randomUser");
                 _user.setId(2);
@@ -161,6 +164,122 @@ public class TestPostsService {
                 assertEquals(0, result.size());
                 verify(postRepo, times(1)).findAllByAuthorId(100);
 
+        }
+
+        @Test
+        void getPostById() {
+
+                User _user = new User("test@gmail", "password", "test", "test", "randomUser");
+                _user.setId(2);
+                List<Post> comments = new ArrayList<>();
+                Set<PostLike> likes = new HashSet<>();
+                List<Notification> noti = new ArrayList<>();
+                Post ex1 = new Post(1, "some", "", 0, comments, noti, _user, PostType.Top, likes);
+                Post[] p = { ex1 };
+                List<Post> posts = new ArrayList<>();
+                posts.add(ex1);
+
+                Optional<Post> pOptional = Optional.of(ex1);
+
+                when(postRepo.findById(1)).thenReturn(pOptional);
+
+                Optional<Post> result = postService.getById(1);
+
+                assertEquals(ex1, result.get());
+                verify(postRepo, times(1)).findById(1);
+
+        }
+
+        @Test
+        void insertLikePost() {
+
+                User _user = new User("test@gmail", "password", "test", "test", "randomUser");
+                _user.setId(2);
+                List<Post> comments = new ArrayList<>();
+                Set<PostLike> likes = new HashSet<>();
+                List<Notification> noti = new ArrayList<>();
+
+                Post ex1 = new Post(1, "some", "", 0, comments, noti, _user, PostType.Top, likes);
+                Post ex2 = new Post(1, "some", "", 1, comments, noti, _user, PostType.Top, likes);
+
+                PostLike liked = new PostLike(new PostLikeKey(1, 2), ex1, _user);
+
+                when(postRepo.save(ex2)).thenReturn(ex2);
+                when(postLikeRepo.save(liked)).thenReturn(liked);
+
+                PostLike result = postService.insertLike(liked);
+
+                assertEquals(liked, result);
+
+                verify(postRepo, times(1)).save(ex2);
+                verify(postLikeRepo, times(1)).save(liked);
+
+        }
+
+        @Test
+        void deleteLikeTest() {
+                User _user = new User("test@gmail", "password", "test", "test", "randomUser");
+                _user.setId(2);
+                List<Post> comments = new ArrayList<>();
+                Set<PostLike> likes = new HashSet<>();
+                List<Notification> noti = new ArrayList<>();
+
+                Post ex1 = new Post(1, "some", "", 2, comments, noti, _user, PostType.Top, likes);
+                Post ex2 = new Post(1, "some", "", 1, comments, noti, _user, PostType.Top, likes);
+
+                PostLike liked = new PostLike(new PostLikeKey(1, 2), ex1, _user);
+
+                when(postRepo.save(ex1)).thenReturn(ex1);
+
+                // return void when(postLikeRepo.delete(liked)).thenReturn(null);
+                postService.deleteLike(liked);
+
+                verify(postRepo, times(1)).save(ex1);
+                verify(postLikeRepo, times(1)).delete(liked);
+        }
+
+        @Test
+        void checkLikeExistsTest() {
+                User _user = new User("test@gmail", "password", "test", "test", "randomUser");
+                _user.setId(2);
+                List<Post> comments = new ArrayList<>();
+                Set<PostLike> likes = new HashSet<>();
+                List<Notification> noti = new ArrayList<>();
+
+                Post ex1 = new Post(1, "some", "", 2, comments, noti, _user, PostType.Top, likes);
+                Post ex2 = new Post(1, "some", "", 1, comments, noti, _user, PostType.Top, likes);
+
+                PostLikeKey key = new PostLikeKey(1, 2);
+                PostLike liked = new PostLike(key, ex1, _user);
+
+                when(postLikeRepo.findById(key)).thenReturn(Optional.of(liked));
+
+                boolean result = postService.likeExists(key);
+                assertEquals(result, true);
+
+                verify(postLikeRepo, times(1)).findById(key);
+        }
+
+        @Test
+        void checkLikeNotExistsTest() {
+                User _user = new User("test@gmail", "password", "test", "test", "randomUser");
+                _user.setId(2);
+                List<Post> comments = new ArrayList<>();
+                Set<PostLike> likes = new HashSet<>();
+                List<Notification> noti = new ArrayList<>();
+
+                Post ex1 = new Post(1, "some", "", 2, comments, noti, _user, PostType.Top, likes);
+                Post ex2 = new Post(1, "some", "", 1, comments, noti, _user, PostType.Top, likes);
+
+                PostLikeKey key = new PostLikeKey(1, 2);
+                PostLike liked = new PostLike(key, ex1, _user);
+
+                when(postLikeRepo.findById(key)).thenReturn(Optional.empty());
+
+                boolean result = postService.likeExists(key);
+                assertEquals(result, false);
+
+                verify(postLikeRepo, times(1)).findById(key);
         }
 
 }
