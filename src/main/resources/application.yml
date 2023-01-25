@@ -58,7 +58,7 @@ spring:
       format-sql: false
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     defer-datasource-initialization: true
-    show-sql: true
+    show-sql: false
 
   datasource:
     url: ${DB_URL}thoughtcloud
