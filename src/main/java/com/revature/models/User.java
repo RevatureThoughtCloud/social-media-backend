@@ -7,7 +7,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-@EqualsAndHashCode
 @Getter
 @Setter
 @Entity
@@ -71,6 +70,39 @@ public class User {
 
     public boolean isBeingFollowedBy(int userId) {
         return followers.stream().anyMatch(x -> x.getFollowing().getId() == userId);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        // If the object is compared with itself then return true
+        if (o == this) {
+            return true;
+        }
+
+        /*
+         * Check if o is an instance of Complex or not
+         * "null instanceof [type]" also returns false
+         */
+        if (!(o instanceof User)) {
+            return false;
+        }
+
+        // Compare the data members and return accordingly
+        return this.id == ((User) o).id;
+    }
+
+    @Override
+    public int hashCode() {
+
+        // We are returning the Geek_id
+        // as a hashcode value.
+        // we can also return some
+        // other calculated value or may
+        // be memory address of the
+        // Object on which it is invoked.
+        // it depends on how you implement
+        // hashCode() method.
+        return this.id;
     }
 
 }
