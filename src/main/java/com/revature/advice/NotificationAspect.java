@@ -22,7 +22,6 @@ public class NotificationAspect {
 	@Autowired
 	private UserRepository userRepository;
 
-
 	@AfterReturning(pointcut = "execution(* com.revature.services.PostService.insertLike(..))", returning = "result")
 	public void createLikeNotification(JoinPoint joinPoint, Object result) {
 
@@ -30,15 +29,19 @@ public class NotificationAspect {
 		User sender = like.getUser();
 		User recipient = like.getPost().getAuthor();
 		Notification notification = new Notification(0L, recipient, sender, like.getPost(), NotificationType.LIKE,
-		NotificationStatus.UNREAD, "");
+				NotificationStatus.UNREAD, "");
 		nServe.createNotification(notification);
 
 	}
 
 	@AfterReturning("execution(* com.revature.services.PostService.deleteLike(..))")
-	public void deleteLikeNotification(JoinPoint joinPoint){
+	public void deleteLikeNotification(JoinPoint joinPoint) {
 		PostLike like = (PostLike) joinPoint.getArgs()[0];
-		Notification note = nServe.findNotification(like.getUser().getId(), like.getPost().getAuthor().getId(), like.getPost().getId(), NotificationType.LIKE);
+		Notification note = nServe.findNotification(like.getUser().getId(), like.getPost().getAuthor().getId(),
+				like.getPost().getId(), NotificationType.LIKE);
+		if (note == null) {
+			return;
+		}
 		nServe.deleteNotification(note.getId());
 		System.out.println("What we found: " + note);
 
@@ -47,19 +50,19 @@ public class NotificationAspect {
 	@AfterReturning(pointcut = "execution(* com.revature.services.PostService.upsert(..))", returning = "result")
 	public void createCommentNotification(JoinPoint joinPoint, Object result) {
 
-		//Object[] args = joinPoint.getArgs();
-		//Post post = (Post) args[0];
+		// Object[] args = joinPoint.getArgs();
+		// Post post = (Post) args[0];
 
 		Post post = (Post) result;
 
 		List<Post> comments = post.getComments();
 
-		if(comments.size() > 0) {
+		if (comments.size() > 0) {
 
 			Post newPost = comments.get(comments.size() - 1);
 			User sender = newPost.getAuthor();
 			User recipient = post.getAuthor();
-			if(sender != recipient) {
+			if (sender != recipient) {
 				Notification notification = new Notification(0L, recipient, sender, newPost, NotificationType.COMMENT,
 						NotificationStatus.UNREAD, "");
 
@@ -67,8 +70,6 @@ public class NotificationAspect {
 			}
 		}
 	}
-
-
 
 	@AfterReturning(pointcut = "execution(* com.revature.services.UserService.followUser(..))", returning = "result")
 	public void createFollowNotification(Object result) {
@@ -79,13 +80,13 @@ public class NotificationAspect {
 		User recipient = follow.getFollowed();
 
 		Notification notification = new Notification(0L, recipient, sender, null, NotificationType.FOLLOW,
-		NotificationStatus.UNREAD, "");
+				NotificationStatus.UNREAD, "");
 
 		nServe.createNotification(notification);
 	}
 
 	@AfterReturning("execution(* com.revature.services.UserService.unFollowUser(..))")
-	public void deleteFollowNotification(JoinPoint joinPoint){
+	public void deleteFollowNotification(JoinPoint joinPoint) {
 		Object[] args = joinPoint.getArgs();
 		User currentUser = (User) args[0];
 		String recipientName = (String) args[1];
@@ -93,10 +94,11 @@ public class NotificationAspect {
 		try {
 			User recipient = userRepository.findByUserName(recipientName)
 					.orElseThrow(UserNotFoundException::new);
-			Notification note = nServe.findNotification(currentUser.getId(), recipient.getId() , NotificationType.FOLLOW);
+			Notification note = nServe.findNotification(currentUser.getId(), recipient.getId(),
+					NotificationType.FOLLOW);
 			nServe.deleteNotification(note.getId());
 			System.out.println("What we found: " + note);
-		} catch(Exception e){
+		} catch (Exception e) {
 			System.out.println("Notification aspect:: No notification for this follow");
 		}
 

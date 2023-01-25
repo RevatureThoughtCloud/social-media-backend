@@ -10,6 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "notifications")
+@EqualsAndHashCode
 public class Notification {
 
 	@Id
