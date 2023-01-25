@@ -73,17 +73,17 @@ public class PostController {
         postService.deleteById(postId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
-    
+
     @PostMapping("/like")
     public ResponseEntity<PostLike> postNewLike(@RequestBody PostLike like) {
         return ResponseEntity.ok(this.postService.insertLike(like));
     }
 
     @DeleteMapping("/like")
-    @ResponseStatus(code=HttpStatus.OK)
-    public boolean deleteLike(@RequestBody PostLike like) {
+    @ResponseStatus(code = HttpStatus.OK)
+    public ResponseEntity<Boolean> deleteLike(@RequestBody PostLike like) {
         this.postService.deleteLike(like);
-        return true;
+        return ResponseEntity.ok(true);
     }
 
 }
