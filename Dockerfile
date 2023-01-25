@@ -8,5 +8,5 @@ COPY ./target/social-media-0.0.1-SNAPSHOT-spring-boot.jar .
 EXPOSE 8081
 
 # start app
-CMD java -jar social-media-0.0.1-SNAPSHOT-spring-boot.jar
+CMD java -Xmx1g -jar social-media-0.0.1-SNAPSHOT-spring-boot.jar
 
